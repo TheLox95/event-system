@@ -24,7 +24,14 @@
                 controller: 'Account.IndexController',
                 controllerAs: 'vm',
                 data: { activeTab: 'account' }
-            });
+            })
+            .state('event', {
+                url: '/event',
+                templateUrl: 'events/index.html',
+                controller: 'Events.IndexController',
+                controllerAs: 'vm',
+                data: { activeTab: 'event' }
+            })
     }
 
     function run($http, $rootScope, $window) {
