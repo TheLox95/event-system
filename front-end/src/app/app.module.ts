@@ -1,3 +1,4 @@
+import { EventService } from './event/event.service';
 import { TokenService } from './auth/token.service';
 import {Routes, RouterModule} from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,12 +16,13 @@ import { TokenInterceptor } from './token-interceptor';
 import { EventFormComponent } from './dashboard/event-form/event-form.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { EventRegisterComponent } from './event/event-register/event-register.component';
+import { CategoryService } from './event/category.service';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
   { path: 'register', component: UserRegisterComponent },
   { path: 'panel', component: DashboardComponent, canActivate: [GuardService] },
-  { path: 'newEvent', component: EventFormComponent, canActivate: [GuardService] }
+  { path: 'newEvent', component: EventRegisterComponent, canActivate: [GuardService] }
 ];
 
 
@@ -41,7 +43,7 @@ const appRoutes: Routes = [
       appRoutes
     )
   ],
-  providers: [UserService, GuardService, TokenService, {
+  providers: [UserService, GuardService, TokenService, CategoryService, EventService, {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
     multi: true
