@@ -13,10 +13,12 @@ module.exports = router;
 function createEvent(req, res) {
     eventService.create(req.body)
         .then(function () {
-            res.sendStatus(200);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: false, success: true, body: 'event created' });
         })
         .catch(function (err) {
-            res.status(400).send(err);            
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body:err });
         });
 }
 
