@@ -8,7 +8,7 @@ export class TokenService {
   constructor(private _http: HttpClient) { }
 
   get() {
-    return this._http.get(`http://localhost:3000/app/token`);
+    return sessionStorage.getItem('token');
   }
 
 }
