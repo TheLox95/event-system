@@ -1,9 +1,9 @@
 <div class="container">
-  <h1>Hero Form</h1>
-  <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+  <h1>Event Register</h1>
+  <form #eventRegister="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" class="form-control" [(ngModel)]="user.username" name="title" id="title" #title="ngModel" required>
+      <input type="text" class="form-control" [(ngModel)]="event.event_name" name="title" id="title" #title="ngModel" required>
       <div [hidden]="title.valid || title.pristine"
         class="alert alert-danger">
         Title is required
@@ -12,7 +12,7 @@
 
     <div class="form-group">
       <label for="description">Description</label>
-      <input type="text" class="form-control" [(ngModel)]="user.username" name="description" id="description" #description="ngModel" required>
+      <input type="text" class="form-control" [(ngModel)]="event.description" name="description" id="description" #description="ngModel" required>
       <div [hidden]="description.valid || description.pristine"
         class="alert alert-danger">
         description is required
@@ -21,7 +21,7 @@
 
     <div class="form-group">
       <label for="image">Image</label>
-      <input type="text" class="form-control" [(ngModel)]="user.username" name="image" id="image" #image="ngModel" required>
+      <input type="text" class="form-control" [(ngModel)]="event.image" name="image" id="image" #image="ngModel" required>
       <div [hidden]="image.valid || image.pristine"
         class="alert alert-danger">
         Image is required
@@ -30,7 +30,7 @@
 
     <div class="form-group">
       <label for="start_date">Start Date</label>
-      <input type="date" class="form-control" [(ngModel)]="user.username" name="start_date" id="start_date" #start_date="ngModel" required>
+      <input type="date" class="form-control" [(ngModel)]="event.start_date" name="start_date" id="start_date" #start_date="ngModel" required>
       <div [hidden]="start_date.valid || start_date.pristine"
         class="alert alert-danger">
         Start Date is required
@@ -38,8 +38,8 @@
     </div>
 
     <div class="form-group">
-      <label for="end_date">Start Date</label>
-      <input type="date" class="form-control" [(ngModel)]="user.username" name="end_date" id="end_date" #end_date="ngModel" required>
+      <label for="end_date">End Date</label>
+      <input type="date" class="form-control" [(ngModel)]="event.end_date" name="end_date" id="end_date" #end_date="ngModel" required>
       <div [hidden]="end_date.valid || end_date.pristine"
         class="alert alert-danger">
         End Date is required
@@ -48,7 +48,7 @@
 
     <div class="form-group">
       <label for="start_time">Start Date</label>
-      <input type="time" class="form-control" [(ngModel)]="user.username" name="start_time" id="start_time" #start_time="ngModel" required>
+      <input type="time" class="form-control" [(ngModel)]="event.start_time" name="start_time" id="start_time" #start_time="ngModel" required>
       <div [hidden]="start_time.valid || start_time.pristine"
         class="alert alert-danger">
         Start Date is required
@@ -57,15 +57,21 @@
 
     <div class="form-group">
       <label for="end_time">Start Date</label>
-      <input type="time" class="form-control" [(ngModel)]="user.username" name="end_time" id="end_time" #end_time="ngModel" required>
+      <input type="time" class="form-control" [(ngModel)]="event.end_time" name="end_time" id="end_time" #end_time="ngModel" required>
       <div [hidden]="end_time.valid || end_time.pristine"
         class="alert alert-danger">
         Start Date is required
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="power">Category</label>
+      <select class="form-control" id="power" [(ngModel)]="event.category_id" name="event_category" required>
+        <option *ngFor="let category of categories | async" [value]="category.id">{{category.title}}</option>
+      </select>
+    </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Submit</button>
-    <div *ngIf="!authenticationFlag" class="help-block error small">Username or password is incorrect.</div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!eventRegister.form.valid">Submit</button>
   </form>
 </div>
