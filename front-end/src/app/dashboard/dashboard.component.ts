@@ -10,7 +10,7 @@ export class DashboardComponent implements OnInit {
 
   msg;
 
-  constructor(private _activeRoute: ActivatedRoute) { }
+  constructor(private _router: Router, private _activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this._activeRoute.queryParamMap
