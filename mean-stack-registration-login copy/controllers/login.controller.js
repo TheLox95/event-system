@@ -23,11 +23,15 @@ router.post('/', function (req, res) {
     }, function (error, response, body) {
         console.log(body);
         if (error) {
-            return res.render('login', { error: 'An error occurred' });
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: 'An error occurred' });
+            return 
         }
 
         if (!body.token) {
-            return res.render('login', { error: body, username: req.body.username });
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: body, username: req.body.username });
+            return
         }
 
         // save JWT token in the session to make it available to the angular app
