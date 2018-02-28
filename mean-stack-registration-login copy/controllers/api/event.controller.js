@@ -4,9 +4,9 @@ var router = express.Router();
 var eventService = require('services/event.service');
 
 // routes
-router.post('/', createEvent);
-router.put('/', updateEvent);
-router.delete('/', deleteEvent);
+router.post('/new', createEvent);
+router.put('/update', updateEvent);
+router.delete('/delete', deleteEvent);
 
 module.exports = router;
 
@@ -16,7 +16,7 @@ function createEvent(req, res) {
             res.sendStatus(200);
         })
         .catch(function (err) {
-            res.status(400).send(err);
+            res.status(400).send(err);            
         });
 }
 
