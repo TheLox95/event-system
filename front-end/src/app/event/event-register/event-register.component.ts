@@ -1,11 +1,13 @@
 import {Router} from '@angular/router';
 import { UserService } from './../../user/user.service';
 import { EventService } from './../event.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoryService } from '../category.service';
 import { Observable } from 'rxjs/Observable';
 import { EventInterface } from '../EventInterface';
 import User from '../../user/User';
+import { Address } from 'angular-google-place';
+import LocationInterface from '../LocationInterface';
 
 @Component({
   selector: 'app-event-register',
@@ -13,6 +15,12 @@ import User from '../../user/User';
   styleUrls: ['./event-register.component.css']
 })
 export class EventRegisterComponent implements OnInit {
+  public responseError = '';
+  public categories: Observable<{'id', 'title', 'description', 'image'}[]>;
+  @ViewChild('gmap') public gmapElement: any;
+  private _currentUser: User;
+  private _map: google.maps.Map;
+  private currentLocation: LocationInterface = {longitude: 0, latitude: 0};
   event = {
     'category_id': '',
     'event_name': '',
@@ -24,15 +32,16 @@ export class EventRegisterComponent implements OnInit {
     'modified': '',
     'start_time': '',
     'end_time': '',
-    'location': '',
+    'location': undefined,
     'count': 0,
-    'aproved': true,
+    'aproved': false
   } as EventInterface;
 
-  responseError = '';
-
-  categories: Observable<{'id', 'title', 'description', 'image'}[]>;
-  private _currentUser: User;
+  private mapProp = {
+    center: new google.maps.LatLng(18.5793, 73.8143),
+    zoom: 15,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
 
   constructor(
     private _categoryService: CategoryService,
@@ -40,9 +49,22 @@ export class EventRegisterComponent implements OnInit {
     private _userService: UserService,
     private _router: Router) { }
 
+  getAddress(place: Address) {
+    console.log('Address', place);
+  }
+
+  getFormattedAddress(event: any) {
+    console.log(event);
+    this.currentLocation.latitude = event.lat;
+    this.currentLocation.longitude = event.lng;
+    this.event.location = this.currentLocation;
+    this._map.setCenter(new google.maps.LatLng(event.lat, event.lng));
+  }
+
   ngOnInit() {
     this.categories = this._categoryService.get();
     this._userService.getCurrent().subscribe(user => this._currentUser = user);
+    this._map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
   }
 
   onSubmit() {
@@ -54,6 +76,7 @@ export class EventRegisterComponent implements OnInit {
   private readonly handleResponse = (res) => {
     if (res.error === true) {
       this.responseError = res.body;
+      return;
     }
     this._router.navigate(['/panel'], {queryParams: {msg: res.body}});
   }
