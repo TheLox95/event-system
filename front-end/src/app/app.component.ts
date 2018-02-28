@@ -8,9 +8,4 @@ import { TokenService } from './token.service';
 })
 export class AppComponent {
   title = 'app';
-
-  constructor(public tokenService: TokenService) {
-    this.tokenService.get().subscribe(console.log);
-
-  }
 }
