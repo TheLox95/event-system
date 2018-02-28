@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Params, Router,  ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,9 +8,18 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private _router: Router) { }
+  msg;
+
+  constructor(private _activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this._activeRoute.queryParamMap
+      .map((params: Params) => params.params)
+      .subscribe( (params) => {
+            if (params) {
+              this.msg = params;
+            }
+        });
   }
 
   logOut() {

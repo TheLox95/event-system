@@ -1,5 +1,3 @@
 <button (click)=logOut()>Logout</button>
 <button (click)=gotToEventForm()>New Event</button>
-<p>
-  dashboard works!
-</p>
+<div *ngIf="this.msg" class="help-block error small">{{this.msg['msg']}}</div>
