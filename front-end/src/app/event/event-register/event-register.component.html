@@ -73,5 +73,6 @@
 
 
     <button type="submit" class="btn btn-success" [disabled]="!eventRegister.form.valid">Submit</button>
+    <div *ngIf="responseError" class="help-block error small">{{responseError}}.</div>
   </form>
 </div>

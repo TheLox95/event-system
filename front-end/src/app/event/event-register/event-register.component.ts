@@ -1,8 +1,11 @@
+import {Router} from '@angular/router';
+import { UserService } from './../../user/user.service';
 import { EventService } from './../event.service';
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../category.service';
 import { Observable } from 'rxjs/Observable';
 import { EventInterface } from '../EventInterface';
+import User from '../../user/User';
 
 @Component({
   selector: 'app-event-register',
@@ -26,17 +29,33 @@ export class EventRegisterComponent implements OnInit {
     'aproved': true,
   } as EventInterface;
 
-  categories: Observable<{'id', 'title', 'description', 'image'}[]>;
+  responseError = '';
 
-  constructor(private _categoryService: CategoryService, private _eventService: EventService) { }
+  categories: Observable<{'id', 'title', 'description', 'image'}[]>;
+  private _currentUser: User;
+
+  constructor(
+    private _categoryService: CategoryService,
+    private _eventService: EventService,
+    private _userService: UserService,
+    private _router: Router) { }
 
   ngOnInit() {
     this.categories = this._categoryService.get();
+    this._userService.getCurrent().subscribe(user => this._currentUser = user);
   }
 
   onSubmit() {
     console.log('submit event');
-    this._eventService.post(this.event).subscribe(console.log, console.log, console.log);
+    this.event.user_id = this._currentUser._id;
+    this._eventService.post(this.event).subscribe(this.handleResponse, console.log, console.log);
+  }
+
+  private readonly handleResponse = (res) => {
+    if (res.error === true) {
+      this.responseError = res.body;
+    }
+    this._router.navigate(['/panel'], {queryParams: {msg: res.body}});
   }
 
 }
