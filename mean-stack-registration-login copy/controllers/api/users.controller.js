@@ -31,10 +31,13 @@ function authenticateUser(req, res) {
 function registerUser(req, res) {
     userService.create(req.body)
         .then(function () {
-            res.sendStatus(200);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: null, success: true, body: req.body.username });
         })
         .catch(function (err) {
-            res.status(400).send(err);
+            console.log(err)
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body: err });
         });
 }
 
