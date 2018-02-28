@@ -11,6 +11,7 @@ export class UserFormComponent implements OnInit {
 
   user = {username: '', password: ''};
   token = '';
+  authenticationFlag = true;
 
   constructor(private _userService: UserService, private _router: Router) { }
 
@@ -19,6 +20,11 @@ export class UserFormComponent implements OnInit {
 
   onSubmit() {
     this._userService.postUser(this.user.username, this.user.password).subscribe(res => {
+      if (res['error']) {
+        this.authenticationFlag = false;
+        return;
+      }
+
       sessionStorage.setItem('token', res['token']);
       this._router.navigate(['/panel']);
     });
