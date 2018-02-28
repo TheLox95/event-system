@@ -17,6 +17,7 @@ import { EventFormComponent } from './dashboard/event-form/event-form.component'
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { EventRegisterComponent } from './event/event-register/event-register.component';
 import { CategoryService } from './event/category.service';
+import {AngularGooglePlaceModule} from 'angular-google-place';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
@@ -39,6 +40,7 @@ const appRoutes: Routes = [
     FormsModule,
     BrowserModule,
     HttpClientModule,
+    AngularGooglePlaceModule,
     RouterModule.forRoot(
       appRoutes
     )
