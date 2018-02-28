@@ -12,7 +12,11 @@ export class UserService {
   }
 
   getCurrent() {
-    return this._http.get(`http://localhost:3000/api/users/current`);
+    return this._http.get(`http://localhost:3000/api/users/current`).map(this.toUser);
+  }
+
+  private readonly toUser = (obj: Object) => {
+    return new User(obj['username'], obj['firstName'], obj['lastName'], obj['_id']);
   }
 
   register(user: User) {

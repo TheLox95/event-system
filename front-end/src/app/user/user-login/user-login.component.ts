@@ -13,10 +13,10 @@ export class UserLoginComponent implements OnInit {
   authenticationFlag = true;
   msg: {[key: string]: any};
 
-  constructor(private _userService: UserService, private _router: Router, private route: ActivatedRoute) { }
+  constructor(private _userService: UserService, private _router: Router, private _activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.queryParamMap
+    this._activeRoute.queryParamMap
       .map((params: Params) => params.params)
       .subscribe( (params) => {
             if (params) {
