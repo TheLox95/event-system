@@ -21,6 +21,7 @@ router.post('/', function (req, res) {
         form: req.body,
         json: true
     }, function (error, response, body) {
+        console.log(body);
         if (error) {
             return res.render('login', { error: 'An error occurred' });
         }
@@ -33,8 +34,9 @@ router.post('/', function (req, res) {
         req.session.token = body.token;
 
         // redirect to returnUrl
-        var returnUrl = req.query.returnUrl && decodeURIComponent(req.query.returnUrl) || '/';
-        res.redirect(returnUrl);
+        // var returnUrl = req.query.returnUrl && decodeURIComponent(req.query.returnUrl) || '/';
+        res.setHeader('Content-Type', 'application/json');
+        res.send(body);
     });
 });
 
