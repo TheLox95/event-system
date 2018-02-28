@@ -1,3 +1,5 @@
+import LocationInterface from './LocationInterface';
+
 export interface EventInterface {
     category_id: string;
     event_name: string;
@@ -9,7 +11,7 @@ export interface EventInterface {
     modified: string;
     start_time: string;
     end_time: string;
-    location: string;
+    location: LocationInterface;
     count: number;
     aproved: boolean;
 }
