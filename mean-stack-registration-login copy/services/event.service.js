@@ -1,11 +1,11 @@
-﻿var config = require('config.json');
+﻿var config = require('../config.json');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
 var mongo = require('mongoskin');
 var db = mongo.db(config.connectionString, { native_parser: true });
-db.bind('users');
+db.bind('events');
 
 var service = {};
 
@@ -15,32 +15,27 @@ service.delete = _delete;
 
 module.exports = service;
 
-function create(userParam) {
+function create(eventParam) {
     var deferred = Q.defer();
 
     // validation
-    db.users.findOne(
-        { username: userParam.username },
-        function (err, user) {
+    db.events.findOne(
+        { event_name: eventParam.event_name },
+        function (err, event) {
             if (err) deferred.reject(err.name + ': ' + err.message);
 
-            if (user) {
+            if (event) {
                 // username already exists
-                deferred.reject('Username "' + userParam.username + '" is already taken');
+                deferred.reject('Event name "' + eventParam.event_name + '" is already taken');
             } else {
                 createEvent();
             }
         });
 
     function createEvent() {
-        // set user object to userParam without the cleartext password
-        var user = _.omit(userParam, 'password');
 
-        // add hashed password to user object
-        user.hash = bcrypt.hashSync(userParam.password, 10);
-
-        db.users.insert(
-            user,
+        db.events.insert(
+            eventParam,
             function (err, doc) {
                 if (err) deferred.reject(err.name + ': ' + err.message);
 
@@ -55,12 +50,12 @@ function update(_id, userParam) {
     var deferred = Q.defer();
 
     // validation
-    db.users.findById(_id, function (err, user) {
+    db.events.findById(_id, function (err, user) {
         if (err) deferred.reject(err.name + ': ' + err.message);
 
         if (user.username !== userParam.username) {
             // username has changed so check if the new username is already taken
-            db.users.findOne(
+            db.events.findOne(
                 { username: userParam.username },
                 function (err, user) {
                     if (err) deferred.reject(err.name + ': ' + err.message);
@@ -90,7 +85,7 @@ function update(_id, userParam) {
             set.hash = bcrypt.hashSync(userParam.password, 10);
         }
 
-        db.users.update(
+        db.events.update(
             { _id: mongo.helper.toObjectID(_id) },
             { $set: set },
             function (err, doc) {
@@ -106,7 +101,7 @@ function update(_id, userParam) {
 function _delete(_id) {
     var deferred = Q.defer();
 
-    db.users.remove(
+    db.events.remove(
         { _id: mongo.helper.toObjectID(_id) },
         function (err) {
             if (err) deferred.reject(err.name + ': ' + err.message);
