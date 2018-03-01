@@ -6,6 +6,7 @@ var eventService = require('services/rsvp.service');
 // routes
 router.get('/invitations/:user_id', invitations);
 router.post('/invitate', invitate);
+router.put('/response', response);
 
 
 module.exports = router;
@@ -28,6 +29,18 @@ function invitate(req, res) {
         .then(function () {
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: false, success: true, body: 'user invitated' });
+        })
+        .catch(function (err) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body:err });
+        });
+}
+
+function response(req, res) {
+    eventService.responseInvitation(req.body)
+        .then(function () {
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: false, success: true, body: 'response to event maded' });
         })
         .catch(function (err) {
             res.setHeader('Content-Type', 'application/json');
