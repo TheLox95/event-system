@@ -13,8 +13,24 @@ var service = {};
 
 service.invitate = invitate;
 service.intitations = getInvitationsByUsername;
+service.responseInvitation = response;
 
 module.exports = service;
+
+function response(responseFromUser) {
+    var deferred = Q.defer();
+
+    db.rsvp.update(
+        { _id: mongo.helper.toObjectID(responseFromUser.id) },
+        { $set: {is_going: responseFromUser.res } },
+        function (err, doc) {
+            if (err) deferred.reject(err.name + ': ' + err.message);
+
+            deferred.resolve();
+        });
+
+    return deferred.promise;
+}
 
 
 function getInvitationsByUsername(invitationParam) {
