@@ -23,8 +23,8 @@ import { PanelComponent } from './dashboard/panel/panel.component';
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
   { path: 'register', component: UserRegisterComponent },
-  { path: 'panel', component: DashboardComponent, children: [
-    {path: '', component: PanelComponent, canActivate: [GuardService] },
+  { path: 'panel', component: DashboardComponent, canActivate: [GuardService], children: [
+    {path: '', component: PanelComponent },
     { path: 'newEvent', component: EventRegisterComponent },
     { path: 'eventEditor', component: EventEditorComponent }
   ] }
