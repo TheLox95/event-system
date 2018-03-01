@@ -12,31 +12,9 @@ db.bind('rsvp');
 var service = {};
 
 service.invitate = invitate;
-service.getByEvent = getByEvent;
 service.intitations = getInvitationsByUsername;
 
 module.exports = service;
-
-function getByEvent(event_id) {
-    var deferred = Q.defer();
-
-    db.rsvp.find({ event_id: event_id.toString() }).toArray(function(err, result) {
-        if (err) deferred.reject(err);
-
-        const arr = result.map((rsvp) => {
-            return userService.getById(rsvp.user_id).then(user => {
-                rsvp.user = user
-                return rsvp;
-            });
-
-        });
-        Promise.all(arr).then(function(results) {
-            deferred.resolve(results);
-        })
-    });
-
-    return deferred.promise;
-}
 
 
 function getInvitationsByUsername(invitationParam) {
