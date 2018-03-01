@@ -1,0 +1,116 @@
+<div class="container">
+  <h1>Event Register</h1>
+  <form #eventRegister="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" [(ngModel)]="event.event_name" name="title" id="title" #title="ngModel" required>
+      <div [hidden]="title.valid || title.pristine"
+        class="alert alert-danger">
+        Title is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" [(ngModel)]="event.description" name="description" id="description" #description="ngModel" required>
+      <div [hidden]="description.valid || description.pristine"
+        class="alert alert-danger">
+        description is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text"
+        #gmapInput
+        type="address"
+        (setAddress) = "getAddress($event)"
+        (FormatAddress)="getFormattedAddress($event)"
+        (street_number) = 'street_number=$event'
+        (street)= 'street=$event'
+        (city)= 'city=$event'
+        (state)='state=$event'
+        (district)='district=$event'
+        (country)='country=$event'
+        (postal_code)='postal_code=$event'
+        (lat)='lat=$event'
+        (lng)='lng=$event'
+        (adr_address)='adr_address=$event'
+        (name)='name=$event'
+        (place_id)='place_id=$event'
+        (types)='types=$event'
+        (url)='url=$event'
+        (utc_offset)='utc_offset=$event'
+        (vicinity)='vicinity=$event'
+        (photos)='photos=$event'
+        (CountryCodes)='CountryCodes=$event'
+          id="autocomplete"
+        angularGooglePlace/>
+
+        <div #gmap style='width:100%;height:400px'></div>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Image</label>
+      <input type="text" class="form-control" [(ngModel)]="event.image" name="image" id="image" #image="ngModel" required>
+      <div [hidden]="image.valid || image.pristine"
+        class="alert alert-danger">
+        Image is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="start_date">Start Date</label>
+      <input type="date" class="form-control" [(ngModel)]="event.start_date" name="start_date" id="start_date" #start_date="ngModel" required>
+      <div [hidden]="start_date.valid || start_date.pristine"
+        class="alert alert-danger">
+        Start Date is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="end_date">End Date</label>
+      <input type="date" class="form-control" [(ngModel)]="event.end_date" name="end_date" id="end_date" #end_date="ngModel" required>
+      <div [hidden]="end_date.valid || end_date.pristine"
+        class="alert alert-danger">
+        End Date is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="start_time">Start Date</label>
+      <input type="time" class="form-control" [(ngModel)]="event.start_time" name="start_time" id="start_time" #start_time="ngModel" required>
+      <div [hidden]="start_time.valid || start_time.pristine"
+        class="alert alert-danger">
+        Start Date is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="end_time">Start Date</label>
+      <input type="time" class="form-control" [(ngModel)]="event.end_time" name="end_time" id="end_time" #end_time="ngModel" required>
+      <div [hidden]="end_time.valid || end_time.pristine"
+        class="alert alert-danger">
+        Start Date is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="power">Category</label>
+      <select class="form-control" id="power" [(ngModel)]="event.category_id" name="event_category" required>
+        <option *ngFor="let category of categories$ | async" [value]="category.id">{{category.title}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="invitae">Invitate user</label>
+      <input type="text" class="form-control" placeholder="Write user name to invitate" #invitateInput>
+      <button type="submit" class="btn btn-success" (click)='invitateUser(invitateInput.value)'>Submit</button>
+      <div *ngIf="errorRes" class="help-block error small">{{errorRes}}.</div>
+
+    </div>
+
+
+    <button type="submit" class="btn btn-success" [disabled]="!eventRegister.form.valid">Submit</button>
+  </form>
+</div>
