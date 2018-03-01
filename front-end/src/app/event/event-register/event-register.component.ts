@@ -11,8 +11,7 @@ import LocationInterface from '../LocationInterface';
 
 @Component({
   selector: 'app-event-register',
-  templateUrl: './event-register.component.html',
-  styleUrls: ['./event-register.component.css']
+  templateUrl: './event-register.component.html'
 })
 export class EventRegisterComponent implements OnInit {
   public responseError = '';
