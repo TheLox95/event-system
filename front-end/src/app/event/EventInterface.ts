@@ -1,3 +1,4 @@
+import { Invitation } from './invitation';
 import LocationInterface from './LocationInterface';
 
 export interface EventInterface {
@@ -15,4 +16,5 @@ export interface EventInterface {
     location: LocationInterface;
     count: number;
     aproved: boolean;
+    invitations: Invitation[];
 }
