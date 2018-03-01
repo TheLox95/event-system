@@ -9,11 +9,23 @@ db.bind('events');
 
 var service = {};
 
+service.getByUser = getByUser;
 service.create = create;
 service.update = update;
 service.delete = _delete;
 
 module.exports = service;
+
+function getByUser(eventParam) {
+    var deferred = Q.defer();
+
+    db.events.find({user_id: eventParam.user_id}).toArray(function(err, result) {
+        if (err) deferred.reject(err);
+        deferred.resolve(result);
+    });
+
+    return deferred.promise;
+}
 
 function create(eventParam) {
     var deferred = Q.defer();

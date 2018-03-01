@@ -4,11 +4,26 @@ var router = express.Router();
 var eventService = require('services/event.service');
 
 // routes
+router.get('/:user_id', getByUserId);
 router.post('/new', createEvent);
 router.put('/update', updateEvent);
 router.delete('/delete', deleteEvent);
 
 module.exports = router;
+
+function getByUserId(req, res) {
+    eventService.getByUser(req.params)
+        .then(function (events) {
+            console.log(events);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: false, success: true, body: events});
+        })
+        .catch(function (err) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body:err });
+        });
+}
+
 
 function createEvent(req, res) {
     eventService.create(req.body)
