@@ -105,6 +105,7 @@ export class EventEditorComponent implements OnInit {
         if (resInvitation['error'] === true) {
           return this._setErrorMessage(resInvitation['body']);
         }
+        this.event.invitations.push(invitation);
       });
     }, console.log);
   }
