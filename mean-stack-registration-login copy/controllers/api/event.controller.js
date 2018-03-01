@@ -14,7 +14,6 @@ module.exports = router;
 function getByUserId(req, res) {
     eventService.getByUser(req.params)
         .then(function (events) {
-            console.log(events);
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: false, success: true, body: events});
         })
