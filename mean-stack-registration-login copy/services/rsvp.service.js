@@ -1,4 +1,6 @@
 ﻿var config = require('../config.json');
+var userService = require('./user.service.js');
+var eventService = require('./event.service.js');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -20,7 +22,21 @@ function getInvitationsByUsername(invitationParam) {
 
     db.rsvp.find({ user_id: invitationParam.user_id }).toArray(function(err, result) {
         if (err) deferred.reject(err);
-        deferred.resolve(result);
+        const arr = result.map((rsvp) => {
+            return userService.getById(rsvp.user_id).then(user => {
+                rsvp.user = user
+                return eventService.getById(rsvp.event_id).then(event => {
+                    rsvp.event = event;
+                    rsvp = _.omit(rsvp, "user_id");
+                    rsvp = _.omit(rsvp, "event_id");
+                    return rsvp;
+                });
+            });
+
+        });
+        Promise.all(arr).then(function(results) {
+            deferred.resolve(results);
+        })
     });
 
     return deferred.promise;
