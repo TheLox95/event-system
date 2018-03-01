@@ -10,6 +10,9 @@ db.bind('events');
 var dbRSVP = mongo.db(config.connectionString, { native_parser: true });
 dbRSVP.bind('rsvp');
 
+var dbUSER = mongo.db(config.connectionString, { native_parser: true });
+dbUSER.bind('users');
+
 var service = {};
 
 service.getById = getById;
@@ -42,8 +45,16 @@ function getByUser(eventParam) {
         const arr = result.map(event => {
             return new Promise((res, rej) =>{
                 dbRSVP.rsvp.find({event_id: event._id.toString()}).toArray((err, invitations) => {
-                    event.invitations = invitations;
-                    res(event);
+                    event.invitations = []
+
+                    invitations.forEach(invitation => {
+                        dbUSER.users.findById(invitation.user_id, (err, user) => {
+                            invitation.user = user;
+                            event.invitations.push(invitation);
+                            
+                            res(event);                            
+                        });                        
+                    });
                 });
             });
         });
