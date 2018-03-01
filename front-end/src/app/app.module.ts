@@ -23,7 +23,7 @@ import { EventEditorComponent } from './event/event-editor/event-editor.componen
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
   { path: 'register', component: UserRegisterComponent },
-  { path: 'panel', component: DashboardComponent, children: [
+  { path: 'panel', children: [
     {path: '', component: DashboardComponent, canActivate: [GuardService] },
     { path: 'newEvent', component: EventRegisterComponent },
     { path: 'eventEditor', component: EventEditorComponent }
