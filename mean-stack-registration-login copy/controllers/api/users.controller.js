@@ -46,13 +46,16 @@ function getByUsername(req, res) {
     userService.getByUsername(req.params['username'])
         .then(function (user) {
             if (user) {
-                res.send(user);
+                res.setHeader('Content-Type', 'application/json');
+                res.send({ error: false, success: true, body: user });
             } else {
-                res.sendStatus(404);
+                res.setHeader('Content-Type', 'application/json');
+                res.send({ error: true, success: false, body: 'user not found' });
             }
         })
         .catch(function (err) {
-            res.status(400).send(err);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body: err });
         });
 }
 
