@@ -1,5 +1,9 @@
 <div class="container">
-  <h1>Event Register</h1>
+  <h1>Event Info</h1>
+  <h4>The Following Invitations were made</h4>
+  <ul class="list-group" *ngFor="let invitation of event.invitations">
+    <li class="list-group-item" >To {{invitation.user.username}} he|she has {{invitation.is_going}}</li>
+  </ul>
   <form #eventRegister="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="title">Title</label>
