@@ -19,12 +19,13 @@ import { EventRegisterComponent } from './event/event-register/event-register.co
 import { CategoryService } from './event/category.service';
 import {AngularGooglePlaceModule} from 'angular-google-place';
 import { EventEditorComponent } from './event/event-editor/event-editor.component';
+import { PanelComponent } from './dashboard/panel/panel.component';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
   { path: 'register', component: UserRegisterComponent },
-  { path: 'panel', children: [
-    {path: '', component: DashboardComponent, canActivate: [GuardService] },
+  { path: 'panel', component: DashboardComponent, children: [
+    {path: '', component: PanelComponent, canActivate: [GuardService] },
     { path: 'newEvent', component: EventRegisterComponent },
     { path: 'eventEditor', component: EventEditorComponent }
   ] }
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     EventFormComponent,
     UserRegisterComponent,
     EventRegisterComponent,
-    EventEditorComponent
+    EventEditorComponent,
+    PanelComponent
   ],
   imports: [
     FormsModule,
