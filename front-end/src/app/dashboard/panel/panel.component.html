@@ -2,7 +2,8 @@
 <ul class="list-group" *ngFor="let event of events">
   <li class="list-group-item" (click)="editEvent(event._id)">{{event.event_name}}</li>
 </ul>
-
+<hr>
+<h1>Invitations</h1>
 <ul class="list-group" *ngFor="let invitation of invitations">
   <li class="list-group-item" >{{invitation.is_going}}</li>
 </ul>
