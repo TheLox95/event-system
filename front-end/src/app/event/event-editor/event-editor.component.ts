@@ -1,4 +1,4 @@
-import { Invitation } from './../invitation';
+import { Invitation, IsGoingState } from './../invitation';
 import {Params, ActivatedRoute} from '@angular/router';
 import { EventService } from './../event.service';
 import { UserService } from './../../user/user.service';
@@ -57,10 +57,13 @@ export class EventEditorComponent implements OnInit {
         this.errorRes = server_res['error'];
         return;
       }
+
       const eventRes = server_res['body'].filter((item) => {
+
         return item._id === this._eventId ? event : null;
       });
       this.event = eventRes[0];
+      console.log(this.event);
       const latAndLgn = new google.maps.LatLng(this.event.location.latitude, this.event.location.longitude);
       this._googleMap.setCenter(latAndLgn);
 
@@ -97,7 +100,7 @@ export class EventEditorComponent implements OnInit {
       if (res['error'] === true) {
         return this._setErrorMessage(res['body']);
       }
-      const invitation = new Invitation(res['body'], this.event, false);
+      const invitation = new Invitation(res['body'], this.event, IsGoingState.UNRESPONDED) ;
       this._eventService.invitate(invitation).subscribe(resInvitation => {
         if (resInvitation['error'] === true) {
           return this._setErrorMessage(resInvitation['body']);
