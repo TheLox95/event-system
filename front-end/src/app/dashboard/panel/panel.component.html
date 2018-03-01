@@ -4,6 +4,24 @@
 </ul>
 <hr>
 <h1>Invitations</h1>
-<ul class="list-group" *ngFor="let invitation of invitations">
-  <li class="list-group-item" >{{invitation.is_going}}</li>
+<h3>You were invited to the following events</h3>
+<ul class="list-group" *ngFor="let invitation of invitations; index as i">
+  <li class="list-group-item" >
+      <p>{{invitation.event.event_name}} by {{invitation.user.username}}</p>
+
+      <div *ngIf="invitation.is_going === 'accepted'">
+          <p>Are you goning? <b (click)="updateInvitation('declined', invitation, i)">No</b></p>
+          <p>You have accepted this invitation</p>
+      </div>
+
+      <div *ngIf="invitation.is_going === 'declined'">
+          <p>Are you goning? <b (click)="updateInvitation('accepted', invitation, i)">Yes</b></p>
+          <p>You have declined this invitation</p>
+      </div>
+
+      <div *ngIf="invitation.is_going === 'unresponded'">
+          <p>Are you goning? <b (click)="updateInvitation('accepted', invitation, i)">Yes</b></p>
+          <p>You have responded to this invitation</p>
+      </div>
+  </li>
 </ul>
