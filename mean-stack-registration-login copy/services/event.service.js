@@ -9,12 +9,25 @@ db.bind('events');
 
 var service = {};
 
+service.getById = getById;
 service.getByUser = getByUser;
 service.create = create;
 service.update = update;
 service.delete = _delete;
 
 module.exports = service;
+
+function getById(_id) {
+    var deferred = Q.defer();
+
+    db.events.findById(_id, function (err, event) {
+        if (err) deferred.reject(err.name + ': ' + err.message);
+
+        deferred.resolve(event);        
+    });
+
+    return deferred.promise;
+}
 
 function getByUser(eventParam) {
     var deferred = Q.defer();
