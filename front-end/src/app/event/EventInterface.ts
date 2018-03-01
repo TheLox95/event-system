@@ -1,6 +1,7 @@
 import LocationInterface from './LocationInterface';
 
 export interface EventInterface {
+    _id: number;
     category_id: string;
     event_name: string;
     user_id: string;
