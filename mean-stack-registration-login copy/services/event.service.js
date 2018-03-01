@@ -47,14 +47,19 @@ function getByUser(eventParam) {
                 dbRSVP.rsvp.find({event_id: event._id.toString()}).toArray((err, invitations) => {
                     event.invitations = []
 
-                    invitations.forEach(invitation => {
-                        dbUSER.users.findById(invitation.user_id, (err, user) => {
-                            invitation.user = user;
-                            event.invitations.push(invitation);
-                            
-                            res(event);                            
-                        });                        
+                    const user = invitations.map(invitation => {
+                        return new Promise((resInside, rejInside) => {
+                            dbUSER.users.findById(invitation.user_id, (err, user) => {
+                                invitation.user = user;
+                                resInside();
+                            }); 
+                        });                       
                     });
+
+                    Promise.all(user).then(function(results) {
+                        event.invitations = invitations;
+                        res(event);
+                    })
                 });
             });
         });
