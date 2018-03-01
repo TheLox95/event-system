@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   events$: Observable<any>;
+  invitations$: Observable<any>;
 
   ngOnInit() {
     this._activeRoute.queryParamMap
@@ -32,16 +33,21 @@ export class DashboardComponent implements OnInit {
         }
       });
 
-      this.getUser().subscribe(this.getEvents);
+      this.getUser().subscribe(this.afterUser);
 
   }
 
-  private readonly getEvents = (user: User) => {
+  private readonly afterUser = (user: User) => {
     this.events$ = this._eventService.get(user);
+    this.invitations$ = this._eventService.invitations(user);
   }
 
   private getUser() {
     return this._userService.getCurrent();
+  }
+
+  editEvent(event_id) {
+    this._router.navigate(['/eventEditor'], {queryParams: {event: event_id}});
   }
 
   logOut() {

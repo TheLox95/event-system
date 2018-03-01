@@ -2,5 +2,9 @@
 <button (click)=gotToEventForm()>New Event</button>
 <div *ngIf="this.msg" class="help-block error small">{{this.msg['msg']}}</div>
 <ul class="list-group" *ngFor="let event of events$ | async">
-  <li class="list-group-item">{{event.event_name}}</li>
+  <li class="list-group-item" (click)="editEvent(event._id)">{{event.event_name}}</li>
+</ul>
+
+<ul class="list-group" *ngFor="let invitation of invitations$ | async">
+  <li class="list-group-item" >{{invitation.is_going}}</li>
 </ul>
