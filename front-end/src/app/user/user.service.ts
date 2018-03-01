@@ -15,6 +15,10 @@ export class UserService {
     return this._http.get(`http://localhost:3000/api/users/current`).map(this.toUser);
   }
 
+  getByUsername(username: string) {
+    return this._http.get(`http://localhost:3000/api/users/${username}`)
+  }
+
   private readonly toUser = (obj: Object) => {
     return new User(obj['username'], obj['firstName'], obj['lastName'], obj['_id']);
   }
