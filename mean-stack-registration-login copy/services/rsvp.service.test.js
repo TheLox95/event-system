@@ -7,4 +7,15 @@ describe('RSVP Service', () => {
         done();
       });
     });
+
+    it('should return a list of rsvp by event id', (done) => {
+      rsvpService.getByEvent("5a973fab20425bde9633e555").then((rsvps) => {
+        expect(rsvps).toBeDefined();
+        done();
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+
+
   });
