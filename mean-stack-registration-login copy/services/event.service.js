@@ -1,5 +1,4 @@
 ﻿var config = require('../config.json');
-var rsvpService = require('./rsvp.service.js');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -7,6 +6,9 @@ var Q = require('q');
 var mongo = require('mongoskin');
 var db = mongo.db(config.connectionString, { native_parser: true });
 db.bind('events');
+
+var dbRSVP = mongo.db(config.connectionString, { native_parser: true });
+dbRSVP.bind('rsvp');
 
 var service = {};
 
@@ -35,11 +37,14 @@ function getByUser(eventParam) {
 
     db.events.find({user_id: eventParam.user_id}).toArray(function(err, result) {
         if (err) deferred.reject(err);
+
         
         const arr = result.map(event => {
-            return rsvpService.getByEvent(event._id).then(invitations => {
-                event.invitations = invitations;
-                return event;
+            return new Promise((res, rej) =>{
+                dbRSVP.rsvp.find({event_id: event._id.toString()}).toArray((err, invitations) => {
+                    event.invitations = invitations;
+                    res(event);
+                });
             });
         });
         Promise.all(arr).then(function(results) {
