@@ -1,4 +1,4 @@
-﻿var config = require('config.json');
+﻿var config = require('../config.json');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -11,6 +11,7 @@ var service = {};
 
 service.authenticate = authenticate;
 service.getById = getById;
+service.getByUsername = getByUsername;
 service.create = create;
 service.update = update;
 service.delete = _delete;
@@ -39,6 +40,24 @@ function getById(_id) {
     var deferred = Q.defer();
 
     db.users.findById(_id, function (err, user) {
+        if (err) deferred.reject(err.name + ': ' + err.message);
+
+        if (user) {
+            // return user (without hashed password)
+            deferred.resolve(_.omit(user, 'hash'));
+        } else {
+            // user not found
+            deferred.resolve();
+        }
+    });
+
+    return deferred.promise;
+}
+
+function getByUsername(username) {
+    var deferred = Q.defer();
+
+    db.users.findOne({username}, function (err, user) {
         if (err) deferred.reject(err.name + ': ' + err.message);
 
         if (user) {

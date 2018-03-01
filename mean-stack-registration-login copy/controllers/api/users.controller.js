@@ -7,6 +7,7 @@ var userService = require('services/user.service');
 router.post('/authenticate', authenticateUser);
 router.post('/register', registerUser);
 router.get('/current', getCurrentUser);
+router.get('/:username', getByUsername);
 router.put('/:_id', updateUser);
 router.delete('/:_id', deleteUser);
 
@@ -38,6 +39,20 @@ function registerUser(req, res) {
             console.log(err)
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: true, success: false, body: err });
+        });
+}
+
+function getByUsername(req, res) {
+    userService.getByUsername(req.params['username'])
+        .then(function (user) {
+            if (user) {
+                res.send(user);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
         });
 }
 
