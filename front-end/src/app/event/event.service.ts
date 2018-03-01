@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventInterface } from './EventInterface';
 import User from '../user/User';
-import { Invitation } from './invitation';
+import { Invitation, IsGoingState } from './invitation';
 
 @Injectable()
 export class EventService {
@@ -28,6 +28,13 @@ export class EventService {
 
   invitations(user: User) {
     return this._http.get(`http://localhost:3000/api/rsvp/invitations/${user._id}`);
+  }
+
+  responceInvitation(invitation: Invitation, res: IsGoingState) {
+    return this._http.put(`http://localhost:3000/api/rsvp/response/`, {
+      id: invitation._id,
+      res: res
+    }, {withCredentials: true});
   }
 
 }
