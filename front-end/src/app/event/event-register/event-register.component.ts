@@ -20,7 +20,7 @@ export class EventRegisterComponent implements OnInit {
   @ViewChild('gmap') public gmapElement: any;
   private _currentUser: User;
   private _map: google.maps.Map;
-  private currentLocation: LocationInterface = {longitude: 0, latitude: 0};
+  private currentLocation: LocationInterface = {longitude: 0, latitude: 0, place_id: ''};
   event = {
     'category_id': '',
     'event_name': '',
@@ -50,7 +50,7 @@ export class EventRegisterComponent implements OnInit {
     private _router: Router) { }
 
   getAddress(place: Address) {
-    console.log('Address', place);
+    this.currentLocation.place_id = place.place_id;
   }
 
   getFormattedAddress(event: any) {
