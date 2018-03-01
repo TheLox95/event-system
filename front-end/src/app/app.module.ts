@@ -13,7 +13,6 @@ import { UserService } from './user/user.service';
 import { GuardService } from './auth/guard.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TokenInterceptor } from './token-interceptor';
-import { EventFormComponent } from './dashboard/event-form/event-form.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { EventRegisterComponent } from './event/event-register/event-register.component';
 import { CategoryService } from './event/category.service';
@@ -37,7 +36,6 @@ const appRoutes: Routes = [
     AppComponent,
     UserLoginComponent,
     DashboardComponent,
-    EventFormComponent,
     UserRegisterComponent,
     EventRegisterComponent,
     EventEditorComponent,
