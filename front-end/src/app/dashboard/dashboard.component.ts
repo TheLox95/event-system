@@ -1,3 +1,4 @@
+import { Invitation } from './../event/invitation';
 import { UserService } from './../user/user.service';
 import { EventService } from './../event/event.service';
 import { Component, OnInit } from '@angular/core';
@@ -21,8 +22,8 @@ export class DashboardComponent implements OnInit {
     private _userService: UserService
   ) {}
 
-  events$: Observable<any>;
-  invitations$: Observable<any>;
+  events: EventInterface[];
+  invitations: Invitation[];
 
   ngOnInit() {
     this._activeRoute.queryParamMap
@@ -38,8 +39,20 @@ export class DashboardComponent implements OnInit {
   }
 
   private readonly afterUser = (user: User) => {
-    this.events$ = this._eventService.get(user);
-    this.invitations$ = this._eventService.invitations(user);
+    this._eventService.get(user).subscribe(serverRes => {
+      if (serverRes['error'] === true) {
+        this.msg = serverRes['body'];
+        return;
+      }
+      this.events = serverRes['body'];
+    });
+    this._eventService.invitations(user).subscribe(serverRes => {
+      if (serverRes['error'] === true) {
+        this.msg = serverRes['body'];
+        return;
+      }
+      this.invitations = serverRes['body'];
+    });
   }
 
   private getUser() {
