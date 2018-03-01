@@ -3,7 +3,7 @@ import {EventService} from '../../event/event.service';
 import {Params, ActivatedRoute,  Router} from '@angular/router';
 import {EventInterface} from '../../event/EventInterface';
 import { Component, OnInit } from '@angular/core';
-import { Invitation } from '../../event/invitation';
+import { Invitation, IsGoingState } from '../../event/invitation';
 import User from '../../user/User';
 
 @Component({
@@ -48,6 +48,7 @@ export class PanelComponent implements OnInit {
         this.msg = serverRes['body'];
         return;
       }
+
       this.events = serverRes['body'];
     });
     this._eventService.invitations(user).subscribe(serverRes => {
@@ -57,6 +58,22 @@ export class PanelComponent implements OnInit {
       }
       this.invitations = serverRes['body'];
     });
+  }
+
+  updateInvitation(res: string, invitation: Invitation, index: number) {
+    let enumValue: IsGoingState;
+
+    if (res === 'accepted') {
+      enumValue = IsGoingState.ACCEPTED;
+    }
+
+    if (res === 'declined') {
+      enumValue = IsGoingState.DECLINED;
+    }
+
+    this._eventService.responceInvitation(invitation, enumValue).subscribe(() => {
+      this.invitations[index].is_going = enumValue;
+    }, console.log);
   }
 
 }
