@@ -1,6 +1,12 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-  <button (click)=logOut() class="btn">Logout</button>
-  <button (click)=goToEventForm() class="btn">New Event</button>
-  <button (click)=goHome() class="btn">Go home</button>
-</nav>
+<ul class="nav nav-pills nav-fill">
+  <li class="nav-item">
+    <a (click)=logOut() class="nav-link" >Logout</a>
+  </li>
+  <li class="nav-item">
+    <a (click)=goToEventForm() class="nav-link" >New Event</a>
+  </li>
+  <li class="nav-item">
+    <a (click)=goHome() class="nav-link" >Go home</a>
+  </li>
+</ul>
 <router-outlet></router-outlet>
