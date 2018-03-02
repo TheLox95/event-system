@@ -8,6 +8,7 @@ import { Subscriber } from 'rxjs/Subscriber';
 
 @Injectable()
 export class EventService {
+  private _servicesMap = new Map();
 
   constructor(private _http: HttpClient) { }
 
@@ -46,7 +47,13 @@ export class EventService {
 }
 
   get(user: User) {
-    return this._http.get(`http://localhost:3000/api/events/${user._id}`);
+    if (this._servicesMap.has(user._id) === true) {
+      return Observable.of(this._servicesMap.get(user._id));
+    }
+    return this._http.get(`http://localhost:3000/api/events/${user._id}`).map(res => {
+      this._servicesMap.set(user._id, res);
+      return res;
+    });
   }
 
   invitate(invitation: Invitation) {
