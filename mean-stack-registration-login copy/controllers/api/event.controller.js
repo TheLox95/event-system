@@ -25,7 +25,7 @@ function getByUserId(req, res) {
 
 
 function createEvent(req, res) {
-    eventService.create(req.body)
+    eventService.create(JSON.parse(req.body.event), req.files.fileKey)
         .then(function () {
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: false, success: true, body: 'event created' });
