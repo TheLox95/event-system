@@ -76,4 +76,8 @@ export class PanelComponent implements OnInit {
     }, console.log);
   }
 
+  edit() {
+    this._router.navigate(['/panel/eventEdit']);
+  }
+
 }

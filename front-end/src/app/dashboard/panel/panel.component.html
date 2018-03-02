@@ -7,7 +7,7 @@
           <div class="col-11" (click)="viewEvent(event._id)">
               {{event.event_name}}
           </div>
-          <div class="col-sm">
+          <div class="col-sm" (click)="edit(event._id)">
             Edit
           </div>
         </div>
