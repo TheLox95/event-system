@@ -38,8 +38,8 @@ export class PanelComponent implements OnInit {
     return this._userService.getCurrent();
   }
 
-  editEvent(event_id) {
-    this._router.navigate(['/panel/eventEditor'], {queryParams: {event: event_id}});
+  viewEvent(event_id) {
+    this._router.navigate(['/panel/eventDetail'], {queryParams: {event: event_id}});
   }
 
   private readonly afterUser = (user: User) => {

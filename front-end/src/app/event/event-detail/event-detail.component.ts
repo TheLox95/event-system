@@ -1,7 +1,7 @@
-import { Invitation, IsGoingState } from './../invitation';
+import { Invitation, IsGoingState } from '../invitation';
 import { Params, ActivatedRoute } from '@angular/router';
-import { EventService } from './../event.service';
-import { UserService } from './../../user/user.service';
+import { EventService } from '../event.service';
+import { UserService } from '../../user/user.service';
 import { CategoryService } from '../category.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EventInterface } from '../EventInterface';
@@ -10,10 +10,10 @@ import { Observable } from 'rxjs/Observable';
 import User from '../../user/User';
 import Category from '../CategoryInterface';
 @Component({
-  selector: 'app-event-editor',
-  templateUrl: './event-editor.component.html'
+  selector: 'app-event-detail',
+  templateUrl: './event-detail.component.html'
 })
-export class EventEditorComponent implements OnInit {
+export class EventDetailComponent implements OnInit {
   event = {} as EventInterface;
 
   public categories: Category[];

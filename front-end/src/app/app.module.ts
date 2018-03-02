@@ -17,7 +17,7 @@ import { UserRegisterComponent } from './user/user-register/user-register.compon
 import { EventRegisterComponent } from './event/event-register/event-register.component';
 import { CategoryService } from './event/category.service';
 import {AngularGooglePlaceModule} from 'angular-google-place';
-import { EventEditorComponent } from './event/event-editor/event-editor.component';
+import { EventDetailComponent } from './event/event-detail/event-detail.component';
 import { PanelComponent } from './dashboard/panel/panel.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 
@@ -27,7 +27,7 @@ const appRoutes: Routes = [
   { path: 'panel', component: DashboardComponent, canActivate: [GuardService], children: [
     {path: '', component: PanelComponent },
     { path: 'newEvent', component: EventRegisterComponent },
-    { path: 'eventEditor', component: EventEditorComponent }
+    { path: 'eventDetail', component: EventDetailComponent }
   ] }
 ];
 
@@ -39,7 +39,7 @@ const appRoutes: Routes = [
     DashboardComponent,
     UserRegisterComponent,
     EventRegisterComponent,
-    EventEditorComponent,
+    EventDetailComponent,
     PanelComponent,
     CapitalizePipe
   ],
