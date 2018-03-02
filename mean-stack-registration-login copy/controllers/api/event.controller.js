@@ -2,14 +2,20 @@
 var express = require('express');
 var router = express.Router();
 var eventService = require('services/event.service');
+var path = require('path');
 
 // routes
 router.get('/:user_id', getByUserId);
+router.get('/image/:event_name', showImage);
 router.post('/new', createEvent);
 router.put('/update', updateEvent);
 router.delete('/delete', deleteEvent);
 
 module.exports = router;
+
+function showImage(req, res){
+    res.sendFile(path.resolve(`./uploads/images/${req.params['event_name']}.jpg`));
+}
 
 function getByUserId(req, res) {
     eventService.getByUser(req.params)
