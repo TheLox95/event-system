@@ -19,6 +19,7 @@ import { CategoryService } from './event/category.service';
 import {AngularGooglePlaceModule} from 'angular-google-place';
 import { EventEditorComponent } from './event/event-editor/event-editor.component';
 import { PanelComponent } from './dashboard/panel/panel.component';
+import { CapitalizePipe } from './pipes/capitalize.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     UserRegisterComponent,
     EventRegisterComponent,
     EventEditorComponent,
-    PanelComponent
+    PanelComponent,
+    CapitalizePipe
   ],
   imports: [
     FormsModule,
