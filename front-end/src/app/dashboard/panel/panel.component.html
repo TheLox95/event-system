@@ -1,6 +1,19 @@
 <div *ngIf="this.msg" class="help-block error small">{{this.msg['msg']}}</div>
 <ul class="list-group" *ngFor="let event of events">
-  <li class="list-group-item" (click)="viewEvent(event._id)">{{event.event_name}}</li>
+  <li class="list-group-item">
+    <div class='container'>
+      <div class="container">
+        <div class="row">
+          <div class="col-11" (click)="viewEvent(event._id)">
+              {{event.event_name}}
+          </div>
+          <div class="col-sm">
+            Edit
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
 </ul>
 <hr>
 <h1>Invitations</h1>
