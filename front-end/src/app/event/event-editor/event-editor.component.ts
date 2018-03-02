@@ -1,14 +1,14 @@
 import { Invitation, IsGoingState } from './../invitation';
-import {Params, ActivatedRoute} from '@angular/router';
+import { Params, ActivatedRoute } from '@angular/router';
 import { EventService } from './../event.service';
 import { UserService } from './../../user/user.service';
-import {CategoryService} from '../category.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { CategoryService } from '../category.service';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EventInterface } from '../EventInterface';
 import { Address } from 'angular-google-place';
 import { Observable } from 'rxjs/Observable';
 import User from '../../user/User';
-
+import Category from '../CategoryInterface';
 @Component({
   selector: 'app-event-editor',
   templateUrl: './event-editor.component.html'
@@ -16,9 +16,10 @@ import User from '../../user/User';
 export class EventEditorComponent implements OnInit {
   event = {} as EventInterface;
 
-  public categories$: Observable<{'id', 'title', 'description', 'image'}[]>;
+  public categories: Category[];
   @ViewChild('gmap') public gmapElement: any;
   @ViewChild('gmapInput') public gmapInputElement: any;
+  @ViewChild('eventImage') eventImage: ElementRef;
   private mapProp = {
     center: new google.maps.LatLng(18.5793, 73.8143),
     zoom: 15,
@@ -30,60 +31,35 @@ export class EventEditorComponent implements OnInit {
   private _googleMap: google.maps.Map;
   errorRes = '';
 
-
   constructor(
     private _categoryService: CategoryService,
     private _userService: UserService,
     private _eventService: EventService,
-    private _activeRoute: ActivatedRoute) { }
+    private _activeRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.categories$ = this._categoryService.get();
-    this._googleMap = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
-    this._userService.getCurrent().subscribe(this._getEvent);
+    this._categoryService.get().subscribe(cats => this.categories = cats);
     this._activeRoute.queryParamMap
       .map((params: Params) => params.params)
       .subscribe(params => {
-        if (params) {
-          this._eventId = params['event'];
-          console.log(this._eventId);
-        }
+        this._eventId = params['event'];
+        this._userService.getCurrent().subscribe(this._onUser);
       });
   }
 
-  private readonly _getEvent = (user) => {
+  private readonly _onUser = user => {
     this._eventService.get(user).subscribe(server_res => {
       if (server_res['error'] === true) {
         this.errorRes = server_res['error'];
         return;
       }
 
-      const eventRes = server_res['body'].filter((item) => {
-
-        return item._id === this._eventId ? event : null;
-      });
-      this.event = eventRes[0];
-      console.log(this.event);
-      const latAndLgn = new google.maps.LatLng(this.event.location.latitude, this.event.location.longitude);
-      this._googleMap.setCenter(latAndLgn);
-
-      const placeService = new google.maps.places.PlacesService(this._googleMap);
-      placeService.getDetails(
-        {placeId: this.event.location.place_id},
-        res => {
-          this.gmapInputElement.nativeElement.value = res.name;
-          const marker = new google.maps.Marker({
-            position: latAndLgn,
-            title: res.name
-        });
-        marker.setMap(this._googleMap);
-      });
-
+      this.event = server_res['body'].filter(this._filterCurrentEvent)[0];
+      this.event.category = this.categories.filter(cat => cat.id === this.event.category_id ? true : false )[0];
+      this.getImage();
+      this._loadGoogleMap();
     });
-  }
-
-  onSubmit() {
-    console.log('event-editor submit');
   }
 
   getAddress(place: Address) {
@@ -92,6 +68,12 @@ export class EventEditorComponent implements OnInit {
 
   getFormattedAddress(event: any) {
     console.log(event);
+  }
+
+  getImage() {
+    this._eventService.image(this.event.event_name).subscribe(image => {
+      this.eventImage.nativeElement.src = image;
+    });
   }
 
   invitateUser(username: string) {
@@ -115,4 +97,21 @@ export class EventEditorComponent implements OnInit {
     return;
   }
 
+  private readonly _filterCurrentEvent = item => {
+    return item._id === this._eventId ? event : null;
+  }
+
+  private _loadGoogleMap() {
+    this._googleMap = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
+    const latAndLgn = new google.maps.LatLng(this.event.location.latitude, this.event.location.longitude);
+
+    this._googleMap.setCenter(latAndLgn);
+
+    const placeService = new google.maps.places.PlacesService(this._googleMap);
+    placeService.getDetails({ placeId: this.event.location.place_id }, res => {
+      this.gmapInputElement.nativeElement.value = res.name;
+      const marker = new google.maps.Marker({position: latAndLgn, title: res.name});
+      marker.setMap(this._googleMap);
+    });
+  }
 }
