@@ -20,6 +20,7 @@ import {AngularGooglePlaceModule} from 'angular-google-place';
 import { EventDetailComponent } from './event/event-detail/event-detail.component';
 import { PanelComponent } from './dashboard/panel/panel.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
+import { EventEditComponent } from './event/event-edit/event-edit.component';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
@@ -27,7 +28,8 @@ const appRoutes: Routes = [
   { path: 'panel', component: DashboardComponent, canActivate: [GuardService], children: [
     {path: '', component: PanelComponent },
     { path: 'newEvent', component: EventRegisterComponent },
-    { path: 'eventDetail', component: EventDetailComponent }
+    { path: 'eventDetail', component: EventDetailComponent },
+    { path: 'eventEdit', component: EventEditComponent }
   ] }
 ];
 
@@ -41,7 +43,8 @@ const appRoutes: Routes = [
     EventRegisterComponent,
     EventDetailComponent,
     PanelComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    EventEditComponent
   ],
   imports: [
     FormsModule,
