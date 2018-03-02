@@ -39,16 +39,18 @@ function getInvitationsByUsername(invitationParam) {
     db.rsvp.find({ user_id: invitationParam.user_id }).toArray(function(err, result) {
         if (err) deferred.reject(err);
         const arr = result.map((rsvp) => {
-            return userService.getById(rsvp.user_id).then(user => {
-                rsvp.user = user
+            return new Promise((resolve, rejected) => {
                 return eventService.getById(rsvp.event_id).then(event => {
                     rsvp.event = event;
                     rsvp = _.omit(rsvp, "user_id");
                     rsvp = _.omit(rsvp, "event_id");
-                    return rsvp;
+    
+                    return userService.getById(event.user_id).then(user => {
+                        rsvp.user = user
+                        resolve(rsvp);
+                    });
                 });
             });
-
         });
         Promise.all(arr).then(function(results) {
             deferred.resolve(results);
