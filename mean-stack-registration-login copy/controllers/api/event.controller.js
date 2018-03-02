@@ -6,6 +6,7 @@ var path = require('path');
 
 // routes
 router.get('/:user_id', getByUserId);
+router.get('/id/:id', getById);
 router.get('/image/:event_name', showImage);
 router.post('/new', createEvent);
 router.put('/update', updateEvent);
@@ -15,6 +16,18 @@ module.exports = router;
 
 function showImage(req, res){
     res.sendFile(path.resolve(`./uploads/images/${req.params['event_name']}.jpg`));
+}
+
+function getById(req, res) {
+    eventService.getById(req.params.id)
+        .then(function (events) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: false, success: true, body: events});
+        })
+        .catch(function (err) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body:err });
+        });
 }
 
 function getByUserId(req, res) {
