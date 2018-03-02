@@ -64,7 +64,7 @@ function invitate(invitationParam) {
     var deferred = Q.defer();
 
     db.rsvp.findOne(
-        { user_id: invitationParam.user_id },
+        { user_id: invitationParam.user_id, event_id: invitationParam.event_id },
         function (err, event) {
             if (err) deferred.reject(err.name + ': ' + err.message);
 
