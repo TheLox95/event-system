@@ -51,7 +51,7 @@
 
     <div class="form-group">
       <label for="image">Image</label>
-      <input type="text" class="form-control" [(ngModel)]="event.image" name="image" id="image" #image="ngModel" required>
+      <input type="file" class="form-control" [(ngModel)]="event.image" name="image" id="image" #image="ngModel" required>
       <div [hidden]="image.valid || image.pristine"
         class="alert alert-danger">
         Image is required

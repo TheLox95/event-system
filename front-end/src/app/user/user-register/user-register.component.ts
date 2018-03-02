@@ -20,6 +20,10 @@ export class UserRegisterComponent implements OnInit {
     this._userService.register(this.user).subscribe(this.redirect);
   }
 
+  goToLogin() {
+    this._route.navigate(['/']);
+  }
+
   private readonly redirect = (res) => {
     if (res['success'] === true) {
       this._route.navigate(['/'], {queryParams: {'msg': 'User register successfully'}});
