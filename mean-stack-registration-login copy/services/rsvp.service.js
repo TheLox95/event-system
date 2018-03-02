@@ -67,6 +67,7 @@ function invitate(invitationParam) {
     db.events.findById(invitationParam.event_id, (err, event) => {
         if(event.user_id === invitationParam.user_id){
             deferred.reject('You cannot invite yourself');
+            return;
         }
 
         db.rsvp.findOne(
@@ -82,8 +83,6 @@ function invitate(invitationParam) {
                 }
             });
     });
-
-    
 
     function doinvitation(){
         db.rsvp.insert(
