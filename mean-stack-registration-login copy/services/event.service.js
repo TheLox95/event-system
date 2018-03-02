@@ -4,6 +4,7 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
 var mongo = require('mongoskin');
+var imageService = require('./image.service');
 var db = mongo.db(config.connectionString, { native_parser: true });
 db.bind('events');
 
@@ -71,27 +72,30 @@ function getByUser(eventParam) {
     return deferred.promise;
 }
 
-function create(eventParam) {
+function create(eventObj, image) {
     var deferred = Q.defer();
 
     // validation
     db.events.findOne(
-        { event_name: eventParam.event_name },
+        { event_name: eventObj.event_name },
         function (err, event) {
             if (err) deferred.reject(err.name + ': ' + err.message);
 
             if (event) {
                 // username already exists
-                deferred.reject('Event name "' + eventParam.event_name + '" is already taken');
+                deferred.reject('Event name "' + event.event_name + '" is already taken');
             } else {
-                createEvent();
+                imageService.save(image, eventObj).then(() => {
+                    createEvent();
+                }).catch(err => deferred.reject(err));             
+                
             }
         });
 
     function createEvent() {
 
         db.events.insert(
-            eventParam,
+            eventObj,
             function (err, doc) {
                 if (err) deferred.reject(err.name + ': ' + err.message);
 
