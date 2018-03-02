@@ -72,6 +72,10 @@ export class EventRegisterComponent implements OnInit {
     this._eventService.post(this.event).subscribe(this.handleResponse, console.log, console.log);
   }
 
+  handleFileInput(files: FileList) {
+    this.event.image = files.item(0);
+  }
+
   private readonly handleResponse = (res) => {
     if (res.error === true) {
       this.responseError = res.body;
