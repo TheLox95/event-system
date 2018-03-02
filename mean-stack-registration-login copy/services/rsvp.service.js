@@ -8,6 +8,7 @@ var Q = require('q');
 var mongo = require('mongoskin');
 var db = mongo.db(config.connectionString, { native_parser: true });
 db.bind('rsvp');
+db.bind('events');
 
 var service = {};
 
@@ -63,18 +64,26 @@ function getInvitationsByUsername(invitationParam) {
 function invitate(invitationParam) {
     var deferred = Q.defer();
 
-    db.rsvp.findOne(
-        { user_id: invitationParam.user_id, event_id: invitationParam.event_id },
-        function (err, event) {
-            if (err) deferred.reject(err.name + ': ' + err.message);
+    db.events.findById(invitationParam.event_id, (err, event) => {
+        if(event.user_id === invitationParam.user_id){
+            deferred.reject('You cannot invite yourself');
+        }
 
-            if (event) {
-                // username already exists
-                deferred.reject('User already invited to this event');
-            } else {
-                doinvitation();
-            }
-        });
+        db.rsvp.findOne(
+            { user_id: invitationParam.user_id, event_id: invitationParam.event_id },
+            function (err, event) {
+                if (err) deferred.reject(err.name + ': ' + err.message);
+    
+                if (event) {
+                    // username already exists
+                    deferred.reject('User already invited to this event');
+                } else {
+                    doinvitation();
+                }
+            });
+    });
+
+    
 
     function doinvitation(){
         db.rsvp.insert(
