@@ -1,4 +1,6 @@
-<button (click)=logOut()>Logout</button>
-<button (click)=goToEventForm()>New Event</button>
-<button (click)=goHome()>Go home</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <button (click)=logOut() class="btn">Logout</button>
+  <button (click)=goToEventForm() class="btn">New Event</button>
+  <button (click)=goHome() class="btn">Go home</button>
+</nav>
 <router-outlet></router-outlet>
