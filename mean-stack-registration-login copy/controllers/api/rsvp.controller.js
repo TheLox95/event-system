@@ -27,9 +27,9 @@ function invitations(req, res) {
 
 function invitate(req, res) {
     eventService.invitate(req.body)
-        .then(function () {
+        .then(function (invitation) {
             res.setHeader('Content-Type', 'application/json');
-            res.send({ error: false, success: true, body: 'user invitated' });
+            res.send({ error: false, success: true, body: invitation });
         })
         .catch(function (err) {
             res.setHeader('Content-Type', 'application/json');

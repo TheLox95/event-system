@@ -105,7 +105,7 @@ function invitate(invitationParam) {
             function (err, doc) {
                 if (err) deferred.reject(err.name + ': ' + err.message);
     
-                deferred.resolve();
+                deferred.resolve(doc.ops[0]);
             });
     }
 
