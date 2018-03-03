@@ -16,6 +16,7 @@ import { GoogleMapComponent } from '../../google-map/google-map.component';
 })
 export class EventDetailComponent implements OnInit {
   event = {} as EventInterface;
+  user: User;
 
   public categories: Category[];
   @ViewChild('eventImage') eventImage: ElementRef;
@@ -43,6 +44,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   private readonly _onUser = user => {
+    this.user = user;
     this._eventService.getById(this._eventId).subscribe(server_res => {
       if (server_res['error'] === true) {
         this.errorRes = server_res['body'];

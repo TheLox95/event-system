@@ -18,13 +18,15 @@
       To {{invitation.user.username}} has declined your invitation
     </li>
   </ul>
-  <div class="form-group">
-    <h3>Invitate user</h3>
-    <input type="text" class="form-control" placeholder="Write user name to invitate" #invitateInput>
-  </div>
-  <div class="form-group">
-  <button type="submit" class="btn btn-success" (click)='invitateUser(invitateInput.value)'>Submit</button>
-    <div *ngIf="errorRes" class="help-block error small">{{errorRes}}.</div>
+  <div *ngIf="event && user && event.user_id === user._id">
+    <div class="form-group">
+      <h3>Invitate user</h3>
+      <input type="text" class="form-control" placeholder="Write user name to invitate" #invitateInput>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success" (click)='invitateUser(invitateInput.value)'>Submit</button>
+      <div *ngIf="errorRes" class="help-block error small">{{errorRes}}.</div>
+    </div>
   </div>
 
   <div class="container">
