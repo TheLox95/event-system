@@ -10,12 +10,8 @@ interface ServerResponse {error: boolean; success: boolean; body: any; }
 
 @Injectable()
 export class EventService {
-  private _servicesMap: Map<'USER' | 'EVENT_ID', Map<string, ServerResponse>> = new Map();
 
-  constructor(private _http: HttpClient) {
-    this._servicesMap.set('USER', new Map());
-    this._servicesMap.set('EVENT_ID', new Map());
-   }
+  constructor(private _http: HttpClient) {}
 
   post(event: EventInterface) {
     console.log(event);
@@ -52,27 +48,12 @@ export class EventService {
 }
 
 getById(id: string) {
-  const possibleEvent = this._servicesMap.get('EVENT_ID').get(id);
 
-  if (possibleEvent !== undefined) {
-    return Observable.of(possibleEvent);
-  }
-  return this._http.get<ServerResponse>(`http://localhost:3000/api/events/id/${id}`).map(res => {
-    this._servicesMap.get('EVENT_ID').set(id, res);
-    return res;
-  });
+  return this._http.get<ServerResponse>(`http://localhost:3000/api/events/id/${id}`);
 }
 
   get(user: User) {
-    const possibleEvent = this._servicesMap.get('USER').get(user._id);
-
-    if (possibleEvent !== undefined) {
-      return Observable.of(possibleEvent);
-    }
-    return this._http.get<ServerResponse>(`http://localhost:3000/api/events/${user._id}`).map(res => {
-      this._servicesMap.get('USER').set(user._id, res);
-      return res;
-    });
+    return this._http.get<ServerResponse>(`http://localhost:3000/api/events/${user._id}`);
   }
 
   invitate(invitation: Invitation) {
