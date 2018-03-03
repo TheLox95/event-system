@@ -6,11 +6,16 @@ import { Invitation, IsGoingState } from './invitation';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 
+type SERVER_RESPONSE = {error: boolean, success: boolean, body: any};
+
 @Injectable()
 export class EventService {
-  private _servicesMap = new Map();
+  private _servicesMap: Map<'USER' | 'EVENT_ID', Map<string, SERVER_RESPONSE>> = new Map();
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {
+    this._servicesMap.set('USER', new Map());
+    this._servicesMap.set('EVENT_ID', new Map());
+   }
 
   post(event: EventInterface) {
     console.log(event);
@@ -46,12 +51,26 @@ export class EventService {
 
 }
 
+getById(id: string) {
+  const possibleEvent = this._servicesMap.get('EVENT_ID').get(id);
+
+  if (possibleEvent !== undefined) {
+    return Observable.of(possibleEvent);
+  }
+  return this._http.get<SERVER_RESPONSE>(`http://localhost:3000/api/events/id/${id}`).map(res => {
+    this._servicesMap.get('EVENT_ID').set(id, res);
+  return res.body;
+  });
+}
+
   get(user: User) {
-    if (this._servicesMap.has(user._id) === true) {
-      return Observable.of(this._servicesMap.get(user._id));
+    const possibleEvent = this._servicesMap.get('USER').get(user._id);
+
+    if (possibleEvent !== undefined) {
+      return Observable.of(possibleEvent);
     }
-    return this._http.get(`http://localhost:3000/api/events/${user._id}`).map(res => {
-      this._servicesMap.set(user._id, res);
+    return this._http.get<SERVER_RESPONSE>(`http://localhost:3000/api/events/${user._id}`).map(res => {
+      this._servicesMap.get('USER').set(user._id, res);
       return res;
     });
   }
