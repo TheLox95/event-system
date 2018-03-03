@@ -43,13 +43,13 @@ export class EventDetailComponent implements OnInit {
   }
 
   private readonly _onUser = user => {
-    this._eventService.get(user).subscribe(server_res => {
+    this._eventService.getById(this._eventId).subscribe(server_res => {
       if (server_res['error'] === true) {
         this.errorRes = server_res['body'];
         return;
       }
 
-      this.event = server_res['body'].filter(this._filterCurrentEvent)[0];
+      this.event = server_res['body'];
       this.googleMapComponent.setCenter({
         lat: this.event.location.latitude,
         lng: this.event.location.longitude
@@ -93,9 +93,5 @@ export class EventDetailComponent implements OnInit {
   private _setErrorMessage(error) {
     this.errorRes = error.toString();
     return;
-  }
-
-  private readonly _filterCurrentEvent = item => {
-    return item._id === this._eventId ? event : null;
   }
 }
