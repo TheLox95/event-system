@@ -29,21 +29,23 @@
     <h3>You were invited to the following events</h3>
     <ul class="list-group" *ngFor="let invitation of invitations; index as i">
       <li class="list-group-item" >
-          <p (click)="viewEvent(invitation.event._id)">{{invitation.event.event_name}} by {{invitation.user.username}}</p>
-
+          <div (click)="viewEvent(invitation.event._id)">
+            <h4>{{invitation.event.event_name | capitalize}}</h4> by <b>{{invitation.user.username | capitalize}}</b>
+          </div>
+          <hr>
           <div *ngIf="invitation.is_going === 'accepted'">
               <p>Are you goning? <b (click)="updateInvitation('declined', invitation, i)">No</b></p>
-              <p>You already have accepted this invitation</p>
+              <p class="p-3 mb-2 bg-success text-white">You already have accepted this invitation</p>
           </div>
 
           <div *ngIf="invitation.is_going === 'declined'">
               <p>Are you goning? <b (click)="updateInvitation('accepted', invitation, i)">Yes</b></p>
-              <p>You already have declined this invitation</p>
+              <p class="p-3 mb-2 bg-secondary text-dark">You already have declined this invitation</p>
           </div>
 
           <div *ngIf="invitation.is_going === 'unresponded'">
               <p>Are you goning? <b (click)="updateInvitation('accepted', invitation, i)">Yes</b></p>
-              <p>You have not responded to this invitation</p>
+              <p class="p-3 mb-2 bg-warning text-dark">You have not responded to this invitation</p>
           </div>
       </li>
     </ul>
