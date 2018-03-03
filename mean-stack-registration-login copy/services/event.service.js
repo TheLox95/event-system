@@ -106,48 +106,41 @@ function create(eventObj, image) {
     return deferred.promise;
 }
 
-function update(_id, userParam) {
+function update(eventParam) {
     var deferred = Q.defer();
 
     // validation
-    db.events.findById(_id, function (err, user) {
+    db.events.findById(eventParam._id, function (err, event) {
         if (err) deferred.reject(err.name + ': ' + err.message);
 
-        if (user.username !== userParam.username) {
+        if (event.event_name !== eventParam.event_name) {
             // username has changed so check if the new username is already taken
             db.events.findOne(
-                { username: userParam.username },
-                function (err, user) {
+                { username: eventParam.event_name },
+                function (err, event) {
                     if (err) deferred.reject(err.name + ': ' + err.message);
 
-                    if (user) {
+                    if (event) {
                         // username already exists
                         deferred.reject('Username "' + req.body.username + '" is already taken')
                     } else {
-                        updateUser();
+                        updateEvent();
                     }
                 });
         } else {
-            updateUser();
+            updateEvent();
         }
     });
 
-    function updateUser() {
-        // fields to update
-        var set = {
-            firstName: userParam.firstName,
-            lastName: userParam.lastName,
-            username: userParam.username,
-        };
+    function updateEvent() {
 
-        // update password if it was entered
-        if (userParam.password) {
-            set.hash = bcrypt.hashSync(userParam.password, 10);
-        }
+        const _id = eventParam._id;
+        delete eventParam._id;
+        delete eventParam.category;
 
         db.events.update(
             { _id: mongo.helper.toObjectID(_id) },
-            { $set: set },
+            { $set: eventParam },
             function (err, doc) {
                 if (err) deferred.reject(err.name + ': ' + err.message);
 
