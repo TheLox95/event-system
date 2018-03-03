@@ -6,11 +6,11 @@ import { Invitation, IsGoingState } from './invitation';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 
-type SERVER_RESPONSE = {error: boolean, success: boolean, body: any};
+interface ServerResponse {error: boolean; success: boolean; body: any; }
 
 @Injectable()
 export class EventService {
-  private _servicesMap: Map<'USER' | 'EVENT_ID', Map<string, SERVER_RESPONSE>> = new Map();
+  private _servicesMap: Map<'USER' | 'EVENT_ID', Map<string, ServerResponse>> = new Map();
 
   constructor(private _http: HttpClient) {
     this._servicesMap.set('USER', new Map());
@@ -57,7 +57,7 @@ getById(id: string) {
   if (possibleEvent !== undefined) {
     return Observable.of(possibleEvent);
   }
-  return this._http.get<SERVER_RESPONSE>(`http://localhost:3000/api/events/id/${id}`).map(res => {
+  return this._http.get<ServerResponse>(`http://localhost:3000/api/events/id/${id}`).map(res => {
     this._servicesMap.get('EVENT_ID').set(id, res);
     return res;
   });
@@ -69,7 +69,7 @@ getById(id: string) {
     if (possibleEvent !== undefined) {
       return Observable.of(possibleEvent);
     }
-    return this._http.get<SERVER_RESPONSE>(`http://localhost:3000/api/events/${user._id}`).map(res => {
+    return this._http.get<ServerResponse>(`http://localhost:3000/api/events/${user._id}`).map(res => {
       this._servicesMap.get('USER').set(user._id, res);
       return res;
     });
@@ -96,7 +96,6 @@ getById(id: string) {
 
   update(event: EventInterface) {
     const formData: FormData = new FormData();
-
     if (event.image instanceof File) {
       formData.append('fileKey', event.image, event.image.name);
     }
