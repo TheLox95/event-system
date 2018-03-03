@@ -6,17 +6,34 @@ var path = require('path');
 
 service.save = handleImageUpload;
 service.get = getImage;
+service.delete = deleteImage;
 const route = `./uploads/images/`;
 
 module.exports = service;
 
 function getImage(eventId){
-    const images = new Map();
-    fs.readdirSync(route).forEach(file => {
-        // TODO: this fail if event name has a dot on it self
-        images.set(file.split('.')[0], file);
-      })
+    const images = _getImageMap();
     return path.resolve(`./uploads/images/${images.get(eventId)}`)
+}
+
+function deleteImage(eventId) {
+    return new Promise((resolve, rejected) => {
+        const images = _getImageMap();
+
+        fs.unlink(`${route}${images.get(eventId)}`, (err) => {
+            if (err) rejected(err);
+            resolve(`${route}${images.get(eventId)}`);
+          });
+    });
+}
+
+function _getImageMap(){
+    const images = new Map();
+    const files = fs.readdirSync(route);
+    for (const file of files) {
+        images.set(file.split('.')[0], file);
+    }
+    return images;
 }
 
 

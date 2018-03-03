@@ -167,8 +167,7 @@ function _delete(_id) {
         { _id: mongo.helper.toObjectID(_id) },
         function (err) {
             if (err) deferred.reject(err.name + ': ' + err.message);
-
-            deferred.resolve();
+            imageService.delete(_id).then(deferred.resolve);
         });
 
     return deferred.promise;
