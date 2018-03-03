@@ -5,7 +5,18 @@
     <h5 *ngIf="event.invitations.length === 0">You have not invited any user</h5>
   </div>
   <ul class="list-group list-group-flush" *ngFor="let invitation of event.invitations">
-    <li class="list-group-item" >To {{invitation.user.username}} he|she has {{invitation.is_going}}</li>
+
+    <li class="list-group-item" *ngIf="invitation.is_going === 'unresponded'">
+      To {{invitation.user.username}} has not responded yet.
+    </li>
+
+    <li class="list-group-item" *ngIf="invitation.is_going === 'accepted'">
+      To {{invitation.user.username}} has acepted your invitation.
+    </li>
+
+    <li class="list-group-item" *ngIf="invitation.is_going === 'declined'">
+      To {{invitation.user.username}} has declined your invitation
+    </li>
   </ul>
   <div class="form-group">
     <h3>Invitate user</h3>
