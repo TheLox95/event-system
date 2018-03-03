@@ -1,22 +1,27 @@
 <div *ngIf="this.msg" class="help-block error small">{{this.msg['msg']}}</div>
-<ul class="list-group" *ngFor="let event of events">
-  <li class="list-group-item">
-    <div class='container'>
-      <div class="container">
-        <div class="row">
-          <div class="col-11" (click)="viewEvent(event._id)">
-              {{event.event_name}}
+<div *ngIf="events && events.length > 0; else noEvents">
+    <ul class="list-group" *ngFor="let event of events">
+        <li class="list-group-item">
+          <div class='container'>
+            <div class="container">
+              <div class="row">
+                <div class="col-11" (click)="viewEvent(event._id)">
+                    {{event.event_name}}
+                </div>
+                <div class="col-sm" (click)="edit(event._id)">
+                  Edit
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-sm" (click)="edit(event._id)">
-            Edit
-          </div>
-        </div>
-      </div>
-    </div>
-  </li>
-</ul>
+        </li>
+      </ul>
+</div>
+<ng-template #noEvents>
+    <h1>You have not create events</h1>
+  </ng-template>
 <hr>
-<div class="container" *ngIf="invitations.length > 0; else noInvitations">
+<div class="container" *ngIf="invitations && invitations.length > 0; else noInvitations">
     <h1>Invitations</h1>
     <h3>You were invited to the following events</h3>
     <ul class="list-group" *ngFor="let invitation of invitations; index as i">
