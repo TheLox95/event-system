@@ -2,6 +2,8 @@
   <h1>Edit</h1>
   <div class="container">
     <div class="container">
+        <form #eventEdit="ngForm" (ngSubmit)="onSubmit()">
+
       <div class="row">
 
         <div class="col-sm">
@@ -36,6 +38,7 @@
               <input [owlDateTimeTrigger]="dtPicker3" [owlDateTime]="dtPicker3"
                       [(ngModel)]="dates"
                      [selectMode]="'range'"
+                     name="dateRange"
                      class="form-control" required>
               <owl-date-time #dtPicker3></owl-date-time>
           </div>
@@ -58,8 +61,8 @@
             <img #eventImage class="img-fluid">
           </div>
       </div>
-
-
+      <button type="submit" class="btn btn-success" [disabled]="!eventEdit.form.valid">Submit</button>
+    </form>
     </div>
 
   </div>

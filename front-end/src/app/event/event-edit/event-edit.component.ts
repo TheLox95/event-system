@@ -54,6 +54,7 @@ export class EventEditComponent implements OnInit {
 
   getAddress(place: Address) {
     console.log('Address', place);
+    this.currentLocation.place_id = place.place_id;
   }
 
   getFormattedAddress(event: any) {
@@ -68,9 +69,15 @@ export class EventEditComponent implements OnInit {
   }
 
   getImage() {
-    this._eventService.image(this.event.event_name).subscribe(image => {
+    this._eventService.image(this.event._id.toString()).subscribe(image => {
       this.eventImage.nativeElement.src = image;
     });
+  }
+
+  onSubmit() {
+    this.event.start_timestamp = this.dates[0].toISOString();
+    this.event.end_timestamp = this.dates[1].toISOString();
+    this._eventService.update(this.event).subscribe(console.log, console.log);
   }
 
 }
