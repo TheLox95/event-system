@@ -1,11 +1,24 @@
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var service = {};
+var path = require('path');
+
 
 service.save = handleImageUpload;
+service.get = getImage;
 const route = `./uploads/images/`;
 
 module.exports = service;
+
+function getImage(imageName){
+    const images = new Map();
+    fs.readdirSync(route).forEach(file => {
+        // TODO: this fail if event name has a dot on it self
+        images.set(file.split('.')[0], file);
+      })
+    return path.resolve(`./uploads/images/${images.get(imageName)}`)
+}
+
 
 function handleImageUpload(image, eventObj){
 
