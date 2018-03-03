@@ -8,6 +8,7 @@ import { Address } from 'angular-google-place';
 export class GoogleMapComponent implements OnInit {
 
   @ViewChild('gmap') public gmapElement: any;
+  @ViewChild('mapInput') public mapInputElement: any;
   @Output() addressFormat = new EventEmitter<any>();
   @Output() address = new EventEmitter<Address>();
   private _map: google.maps.Map;
@@ -30,6 +31,28 @@ export class GoogleMapComponent implements OnInit {
   getFormattedAddress(event: any) {
     this._map.setCenter(new google.maps.LatLng(event.lat, event.lng));
     this.addressFormat.emit(event);
+  }
+
+  async setCenter(latLng: google.maps.LatLng | google.maps.LatLngLiteral, place_id: string) {
+    this._map.setCenter(latLng);
+
+    const place = await this._getPlace(place_id);
+    this.mapInputElement.nativeElement.value = place.name;
+    this._addMarker(latLng, place.name);
+  }
+
+  private _getPlace(place_id) {
+    return new Promise<google.maps.places.PlaceResult>((resolve, rejected) => {
+      const placeService = new google.maps.places.PlacesService(this._map);
+      placeService.getDetails({ placeId: place_id }, res => {
+        resolve(res);
+      });
+    });
+  }
+
+  private _addMarker(latLng: google.maps.LatLng | google.maps.LatLngLiteral, title: string) {
+    const marker = new google.maps.Marker({position: latLng, title});
+    marker.setMap(this._map);
   }
 
 }
