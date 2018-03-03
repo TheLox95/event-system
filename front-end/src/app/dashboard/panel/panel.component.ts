@@ -5,6 +5,7 @@ import {EventInterface} from '../../event/EventInterface';
 import { Component, OnInit } from '@angular/core';
 import { Invitation, IsGoingState } from '../../event/invitation';
 import User from '../../user/User';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-panel',
@@ -15,12 +16,15 @@ export class PanelComponent implements OnInit {
   msg;
   events: EventInterface[];
   invitations: Invitation[];
+  closeResult: string;
+  eventIndexToDelete: number;
 
   constructor(
     private _router: Router,
     private _activeRoute: ActivatedRoute,
     private _eventService: EventService,
-    private _userService: UserService
+    private _userService: UserService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -78,6 +82,28 @@ export class PanelComponent implements OnInit {
 
   edit(id) {
     this._router.navigate(['/panel/eventEdit'], {queryParams: {'id': id}});
+  }
+
+  delete(index) {
+    this._eventService.delete(this.events[index]).subscribe(res => {
+      if (res['error'] === true) {
+        this.msg = res['body'];
+        return;
+      }
+      this.events = this.events.filter((item, indexItem) => indexItem !== index);
+    });
+
+  }
+
+  open(content, index) {
+    this.eventIndexToDelete = index;
+    this.modalService.open(content).result
+      .then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+        if (result === 'OK') {
+          this.delete(index);
+        }
+      });
   }
 
 }
