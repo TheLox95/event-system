@@ -10,13 +10,13 @@ const route = `./uploads/images/`;
 
 module.exports = service;
 
-function getImage(imageName){
+function getImage(eventId){
     const images = new Map();
     fs.readdirSync(route).forEach(file => {
         // TODO: this fail if event name has a dot on it self
         images.set(file.split('.')[0], file);
       })
-    return path.resolve(`./uploads/images/${images.get(imageName)}`)
+    return path.resolve(`./uploads/images/${images.get(eventId)}`)
 }
 
 
@@ -37,7 +37,7 @@ function handleImageUpload(image, eventObj){
 
 function saveImage(image, eventObj, route) {
     return new Promise((resolve, rejected) => {
-        image.mv(`${route}${eventObj.event_name}.${image.name.split(".")[1]}`, function (err) {
+        image.mv(`${route}${eventObj._id}.${image.name.split(".")[1]}`, function (err) {
             if (err){
                 rejected(err);
             }
