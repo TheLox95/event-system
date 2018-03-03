@@ -9,20 +9,20 @@
     <li class="list-group-item" *ngIf="invitation.is_going === 'unresponded'">
     <div class="row">
       <div class="col-10">
-        To {{invitation.user.username}} has not responded yet.
+        <p class="text-warning">To {{invitation.user.username}} has not responded yet.</p>
       </div>
       <div class="col-sm" (click)="cancelInvitation(i)">
-          Cancel
+          <button type="button" class="btn btn-danger">Cancel</button>
         </div>
     </div>
     </li>
 
     <li class="list-group-item" *ngIf="invitation.is_going === 'accepted'">
-      To {{invitation.user.username}} has acepted your invitation.
+      <p class="text-success">To {{invitation.user.username}} has acepted your invitation.</p>
     </li>
 
     <li class="list-group-item" *ngIf="invitation.is_going === 'declined'">
-      To {{invitation.user.username}} has declined your invitation
+        <p class="text-danger">To {{invitation.user.username}} has declined your invitation</p>
     </li>
   </ul>
   <div *ngIf="event && user && event.user_id === user._id">

@@ -5,14 +5,14 @@
           <div class='container'>
             <div class="container">
               <div class="row">
-                <div class="col-10" (click)="viewEvent(event._id)">
-                    {{event.event_name}}
+                <div class="col-8" (click)="viewEvent(event._id)">
+                    <h4 placement="left" ngbTooltip="Details">{{event.event_name | capitalize}}</h4>
                 </div>
                 <div class="col-sm" (click)="edit(event._id)">
-                  Edit
+                    <button type="button" class="btn btn-info">Edit</button>
                 </div>
                 <div class="col-sm" (click)="open(content, i)">
-                    DELETE
+                    <button type="button" class="btn btn-danger">DELETE</button>
                   </div>
               </div>
             </div>
