@@ -21,6 +21,7 @@ import { EventDetailComponent } from './event/event-detail/event-detail.componen
 import { PanelComponent } from './dashboard/panel/panel.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { EventEditComponent } from './event/event-edit/event-edit.component';
+import { GoogleMapComponent } from './google-map/google-map.component';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
@@ -44,7 +45,8 @@ const appRoutes: Routes = [
     EventDetailComponent,
     PanelComponent,
     CapitalizePipe,
-    EventEditComponent
+    EventEditComponent,
+    GoogleMapComponent
   ],
   imports: [
     FormsModule,
