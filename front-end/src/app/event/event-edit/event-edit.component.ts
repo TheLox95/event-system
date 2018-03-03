@@ -2,7 +2,6 @@ import { GoogleMapComponent } from './../../google-map/google-map.component';
 import {EventInterface} from '../EventInterface';
 import { EventService } from './../event.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Address } from 'angular-google-place';
 import { ActivatedRoute, Params } from '@angular/router';
 import LocationInterface from '../LocationInterface';
 import { CategoryService } from '../category.service';

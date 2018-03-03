@@ -6,7 +6,6 @@ import { CategoryService } from '../category.service';
 import { Observable } from 'rxjs/Observable';
 import { EventInterface } from '../EventInterface';
 import User from '../../user/User';
-import { Address } from 'angular-google-place';
 import LocationInterface from '../LocationInterface';
 
 @Component({
