@@ -107,4 +107,8 @@ getById(id: string) {
     return this._http.delete(`http://localhost:3000/api/events/delete/${event._id}`);
   }
 
+  cancelInvitation(invitation: Invitation) {
+    return this._http.delete(`http://localhost:3000/api/rsvp/cancel/${invitation._id}`);
+  }
+
 }
