@@ -1,31 +1,32 @@
 <div class="container">
   <h1>{{event.event_name | capitalize}}</h1>
-  <div *ngIf="event.invitations">
-    <h5 *ngIf="event.invitations.length > 0">The Following Invitations were made</h5>
-    <h5 *ngIf="event.invitations.length === 0">You have not invited any user</h5>
-  </div>
-  <ul class="list-group list-group-flush" *ngFor="let invitation of event.invitations; index as i">
-
-    <li class="list-group-item" *ngIf="invitation.is_going === 'unresponded'">
-    <div class="row">
-      <div class="col-10">
-        <p class="text-warning">To {{invitation.user.username}} has not responded yet.</p>
-      </div>
-      <div class="col-sm" (click)="cancelInvitation(i)">
-          <button type="button" class="btn btn-danger">Cancel</button>
-        </div>
-    </div>
-    </li>
-
-    <li class="list-group-item" *ngIf="invitation.is_going === 'accepted'">
-      <p class="text-success">To {{invitation.user.username}} has acepted your invitation.</p>
-    </li>
-
-    <li class="list-group-item" *ngIf="invitation.is_going === 'declined'">
-        <p class="text-danger">To {{invitation.user.username}} has declined your invitation</p>
-    </li>
-  </ul>
+  <hr>
   <div *ngIf="event && user && event.user_id === user._id">
+      <div *ngIf="event.invitations">
+          <h5 *ngIf="event.invitations.length > 0">The Following Invitations were made</h5>
+          <h5 *ngIf="event.invitations.length === 0">You have not invited any user</h5>
+        </div>
+      <ul class="list-group list-group-flush" *ngFor="let invitation of event.invitations; index as i">
+
+          <li class="list-group-item" *ngIf="invitation.is_going === 'unresponded'">
+          <div class="row">
+            <div class="col-10">
+              <p class="text-warning">To {{invitation.user.username}} has not responded yet.</p>
+            </div>
+            <div class="col-sm" (click)="cancelInvitation(i)">
+                <button type="button" class="btn btn-danger">Cancel</button>
+              </div>
+          </div>
+          </li>
+
+          <li class="list-group-item" *ngIf="invitation.is_going === 'accepted'">
+            <p class="text-success">To {{invitation.user.username}} has acepted your invitation.</p>
+          </li>
+
+          <li class="list-group-item" *ngIf="invitation.is_going === 'declined'">
+              <p class="text-danger">To {{invitation.user.username}} has declined your invitation</p>
+          </li>
+        </ul>
     <div class="form-group">
       <h3>Invitate user</h3>
       <input type="text" class="form-control" placeholder="Write user name to invitate" #invitateInput>
@@ -57,7 +58,7 @@
             </div>
           </div>
         </div>
-
+        <hr>
         <div class="form-group">
           <label for="location"><h4>Location</h4></label>
           <app-google-map></app-google-map>
