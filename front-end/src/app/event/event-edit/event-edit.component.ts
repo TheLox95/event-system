@@ -15,6 +15,7 @@ import Category from '../CategoryInterface';
 export class EventEditComponent implements OnInit {
   event = {} as EventInterface;
   categories: Category[];
+  dates: Date[] = [];
   private currentLocation: LocationInterface = {longitude: 0, latitude: 0, place_id: ''};
   @ViewChild(GoogleMapComponent) googleMapComponent: GoogleMapComponent;
   @ViewChild('eventImage') eventImage: ElementRef;
@@ -33,6 +34,13 @@ export class EventEditComponent implements OnInit {
       }
       this._eventService.getById(this.event._id.toString()).subscribe(res => {
         this.event = res.body;
+
+        this.dates = [
+          new Date(this.event.start_timestamp),
+          new Date(this.event.end_timestamp)
+        ];
+
+
         this.googleMapComponent.setCenter({
           lat: this.event.location.latitude,
           lng: this.event.location.longitude
