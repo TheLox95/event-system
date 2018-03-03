@@ -28,7 +28,6 @@ export class GoogleMapComponent implements OnInit {
   }
 
   getFormattedAddress(event: any) {
-    console.log(event);
     this._map.setCenter(new google.maps.LatLng(event.lat, event.lng));
     this.addressFormat.emit(event);
   }
