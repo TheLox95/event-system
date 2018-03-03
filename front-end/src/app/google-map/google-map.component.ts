@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Address } from 'angular-google-place';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-google-map',
