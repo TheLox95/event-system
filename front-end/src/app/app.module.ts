@@ -22,6 +22,8 @@ import { PanelComponent } from './dashboard/panel/panel.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { EventEditComponent } from './event/event-edit/event-edit.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
@@ -53,6 +55,9 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     AngularGooglePlaceModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(
       appRoutes
     )
