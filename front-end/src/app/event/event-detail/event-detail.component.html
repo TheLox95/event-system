@@ -27,10 +27,10 @@
             </div>
             <div class="col-sm">
                 <div>
-                  <h5>Starts at:</h5> {{event.start_date}} {{event.start_time}}</div>
+                  <h5>Starts at:</h5> {{event.start_timestamp | date:'yyyy-MM-dd HH:mm'}}</div>
             </div>
             <div class="col-sm">
-                <div><h5>Ends at: </h5> {{event.end_date}} {{event.end_time}}</div>
+                <div><h5>Ends at: </h5>{{event.end_timestamp | date:'yyyy-MM-dd HH:mm'}}</div>
             </div>
             <div class="col-sm">
                 <div><h5>Category:</h5>  <p *ngIf="event.category">{{event.category.title}}</p></div>

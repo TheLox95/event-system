@@ -51,11 +51,12 @@ export class EventDetailComponent implements OnInit {
   private readonly _onUser = user => {
     this._eventService.get(user).subscribe(server_res => {
       if (server_res['error'] === true) {
-        this.errorRes = server_res['error'];
+        this.errorRes = server_res['body'];
         return;
       }
 
       this.event = server_res['body'].filter(this._filterCurrentEvent)[0];
+      console.log(this.event);
       this.event.category = this.categories.filter(cat => cat.id === this.event.category_id ? true : false )[0];
       this.getImage();
       this._loadGoogleMap();
