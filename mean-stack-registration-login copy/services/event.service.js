@@ -74,6 +74,7 @@ function getByUser(eventParam) {
 
 function create(eventObj, image) {
     var deferred = Q.defer();
+    
 
     // validation
     db.events.findOne(
@@ -84,12 +85,10 @@ function create(eventObj, image) {
             if (event) {
                 // username already exists
                 deferred.reject('Event name "' + event.event_name + '" is already taken');
-            } else {
-                imageService.save(image, eventObj).then(() => {
-                    createEvent();
-                }).catch(err => deferred.reject(err));             
                 
-            }
+            } 
+            createEvent();
+            
         });
 
     function createEvent() {
@@ -99,7 +98,13 @@ function create(eventObj, image) {
             function (err, doc) {
                 if (err) deferred.reject(err.name + ': ' + err.message);
 
-                deferred.resolve();
+                console.log(doc);
+
+                imageService.save(image, doc.ops[0]).then(() => {
+                    deferred.resolve();
+                }).catch(err => deferred.reject(err));         
+                       
+
             });
     }
 
