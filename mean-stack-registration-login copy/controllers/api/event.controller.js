@@ -10,7 +10,7 @@ router.get('/id/:id', getById);
 router.get('/image/:event_id', showImage);
 router.post('/new', createEvent);
 router.put('/update', updateEvent);
-router.delete('/delete', deleteEvent);
+router.delete('/delete/:id', deleteEvent);
 
 module.exports = router;
 
@@ -74,17 +74,13 @@ function updateEvent(req, res) {
 }
 
 function deleteEvent(req, res) {
-    var userId = req.user.sub;
-    if (req.params._id !== userId) {
-        // can only delete own account
-        return res.status(401).send('You can only delete your own account');
-    }
-
-    eventService.delete(userId)
+    eventService.delete(req.params.id)
         .then(function () {
-            res.sendStatus(200);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: false, success: true, body: 'event deleted' });
         })
         .catch(function (err) {
-            res.status(400).send(err);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body: err });
         });
 }
