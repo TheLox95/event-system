@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Indiana97/login/issues"
   },
-  "homepage": "https://github.com/Indiana97/login#readme"
+  "homepage": "https://github.com/Indiana97/login#readme",
+  "dependencies": {
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0"
+  }
 }

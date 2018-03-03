@@ -24,6 +24,7 @@ import { EventEditComponent } from './event/event-edit/event-edit.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: '', component: UserLoginComponent },
@@ -58,6 +59,7 @@ const appRoutes: Routes = [
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     BrowserAnimationsModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot(
       appRoutes
     )
