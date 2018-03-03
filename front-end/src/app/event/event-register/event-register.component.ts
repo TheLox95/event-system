@@ -16,9 +16,7 @@ import LocationInterface from '../LocationInterface';
 export class EventRegisterComponent implements OnInit {
   public responseError = '';
   public categories: Observable<{'id', 'title', 'description', 'image'}[]>;
-  @ViewChild('gmap') public gmapElement: any;
   private _currentUser: User;
-  private _map: google.maps.Map;
   private currentLocation: LocationInterface = {longitude: 0, latitude: 0, place_id: ''};
   event = {
     'category_id': '',
@@ -36,34 +34,26 @@ export class EventRegisterComponent implements OnInit {
     'aproved': false
   } as EventInterface;
 
-  private mapProp = {
-    center: new google.maps.LatLng(18.5793, 73.8143),
-    zoom: 15,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-
   constructor(
     private _categoryService: CategoryService,
     private _eventService: EventService,
     private _userService: UserService,
     private _router: Router) { }
 
-  getAddress(place: Address) {
-    this.currentLocation.place_id = place.place_id;
-  }
+    getAddress(place: Address) {
+      this.currentLocation.place_id = place.place_id;
+    }
 
-  getFormattedAddress(event: any) {
-    console.log(event);
-    this.currentLocation.latitude = event.lat;
-    this.currentLocation.longitude = event.lng;
-    this.event.location = this.currentLocation;
-    this._map.setCenter(new google.maps.LatLng(event.lat, event.lng));
-  }
+    getFormattedAddress(event: any) {
+      console.log(event);
+      this.currentLocation.latitude = event.lat;
+      this.currentLocation.longitude = event.lng;
+      this.event.location = this.currentLocation;
+    }
 
   ngOnInit() {
     this.categories = this._categoryService.get();
     this._userService.getCurrent().subscribe(user => this._currentUser = user);
-    this._map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
   }
 
   onSubmit() {
