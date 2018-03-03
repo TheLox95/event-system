@@ -103,4 +103,8 @@ getById(id: string) {
     return this._http.put(`http://localhost:3000/api/events/update/`, formData);
   }
 
+  delete(event: EventInterface) {
+    return this._http.delete(`http://localhost:3000/api/events/delete/${event._id}`);
+  }
+
 }
