@@ -9,8 +9,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-panel',
-  templateUrl: './panel.component.html',
-  styleUrls: ['./panel.component.css']
+  templateUrl: './panel.component.html'
 })
 export class PanelComponent implements OnInit {
   msg;
