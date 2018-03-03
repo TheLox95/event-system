@@ -7,6 +7,7 @@ var eventService = require('services/rsvp.service');
 router.get('/invitations/:user_id', invitations);
 router.post('/invitate', invitate);
 router.put('/response', response);
+router.delete('/cancel/:id', cancel);
 
 
 module.exports = router;
@@ -41,6 +42,18 @@ function response(req, res) {
         .then(function () {
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: false, success: true, body: 'response to event maded' });
+        })
+        .catch(function (err) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body:err });
+        });
+}
+
+function cancel(req, res) {
+    eventService.cancelInvitation(req.params.id)
+        .then(function () {
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: false, success: true, body: 'response cancelled' });
         })
         .catch(function (err) {
             res.setHeader('Content-Type', 'application/json');
