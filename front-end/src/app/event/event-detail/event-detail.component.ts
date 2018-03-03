@@ -72,7 +72,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   getImage() {
-    this._eventService.image(this.event.event_name).subscribe(image => {
+    this._eventService.image(this.event._id.toString()).subscribe(image => {
       this.eventImage.nativeElement.src = image;
     });
   }

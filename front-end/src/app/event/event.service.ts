@@ -28,12 +28,12 @@ export class EventService {
     return this._http.post(`http://localhost:3000/api/events/new`, formData);
   }
 
-  image(event_name: string) {
+  image(event_id: string) {
     return new Observable((observer: Subscriber<string>) => {
       let objectUrl: string = null;
 
       this._http
-            .get(`http://localhost:3000/api/events/image/${event_name}`, {
+            .get(`http://localhost:3000/api/events/image/${event_id}`, {
                 responseType: 'blob'
             })
           .subscribe(m => {
@@ -92,6 +92,15 @@ getById(id: string) {
       id: invitation._id,
       res: res
     }, {withCredentials: true});
+  }
+
+  update(event: EventInterface) {
+    const formData: FormData = new FormData();
+    if (event.image instanceof File) {
+      formData.append('fileKey', event.image, event.image.name);
+    }
+    formData.append('event', JSON.stringify(event));
+    return this._http.put(`http://localhost:3000/api/events/update/`, {event});
   }
 
 }
