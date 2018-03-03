@@ -30,7 +30,28 @@ function getById(_id) {
     db.events.findById(_id, function (err, event) {
         if (err) deferred.reject(err.name + ': ' + err.message);
 
-        deferred.resolve(event);        
+        const promise =  new Promise((res, rej) =>{
+            dbRSVP.rsvp.find({event_id: event._id.toString()}).toArray((err, invitations) => {
+                event.invitations = []
+
+                const user = invitations.map(invitation => {
+                    return new Promise((resInside, rejInside) => {
+                        dbUSER.users.findById(invitation.user_id, (err, user) => {
+                            invitation.user = user;
+                            resInside(user);
+                        }); 
+                    });                       
+                });
+
+                Promise.all(user).then(function(results) {
+                    event.invitations = invitations;
+                    res(event);
+                })
+            });
+        });
+
+        promise.then(() => deferred.resolve(event));
+
     });
 
     return deferred.promise;
