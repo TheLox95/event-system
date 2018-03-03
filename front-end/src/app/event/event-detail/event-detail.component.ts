@@ -60,14 +60,6 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  getAddress(place: Address) {
-    console.log('Address', place);
-  }
-
-  getFormattedAddress(event: any) {
-    console.log(event);
-  }
-
   getImage() {
     this._eventService.image(this.event._id.toString()).subscribe(image => {
       this.eventImage.nativeElement.src = image;
