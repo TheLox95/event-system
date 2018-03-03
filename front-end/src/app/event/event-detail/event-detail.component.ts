@@ -9,6 +9,7 @@ import { Address } from 'angular-google-place';
 import { Observable } from 'rxjs/Observable';
 import User from '../../user/User';
 import Category from '../CategoryInterface';
+import { GoogleMapComponent } from '../../google-map/google-map.component';
 @Component({
   selector: 'app-event-detail',
   templateUrl: './event-detail.component.html'
@@ -17,18 +18,11 @@ export class EventDetailComponent implements OnInit {
   event = {} as EventInterface;
 
   public categories: Category[];
-  @ViewChild('gmap') public gmapElement: any;
-  @ViewChild('gmapInput') public gmapInputElement: any;
   @ViewChild('eventImage') eventImage: ElementRef;
-  private mapProp = {
-    center: new google.maps.LatLng(18.5793, 73.8143),
-    zoom: 15,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
+  @ViewChild(GoogleMapComponent) googleMapComponent: GoogleMapComponent;
 
   private _currentUser: User;
   private _eventId: string;
-  private _googleMap: google.maps.Map;
   errorRes = '';
 
   constructor(
@@ -56,10 +50,13 @@ export class EventDetailComponent implements OnInit {
       }
 
       this.event = server_res['body'].filter(this._filterCurrentEvent)[0];
+      this.googleMapComponent.setCenter({
+        lat: this.event.location.latitude,
+        lng: this.event.location.longitude
+      }, this.event.location.place_id);
       console.log(this.event);
       this.event.category = this.categories.filter(cat => cat.id === this.event.category_id ? true : false )[0];
       this.getImage();
-      this._loadGoogleMap();
     });
   }
 
@@ -100,19 +97,5 @@ export class EventDetailComponent implements OnInit {
 
   private readonly _filterCurrentEvent = item => {
     return item._id === this._eventId ? event : null;
-  }
-
-  private _loadGoogleMap() {
-    this._googleMap = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
-    const latAndLgn = new google.maps.LatLng(this.event.location.latitude, this.event.location.longitude);
-
-    this._googleMap.setCenter(latAndLgn);
-
-    const placeService = new google.maps.places.PlacesService(this._googleMap);
-    placeService.getDetails({ placeId: this.event.location.place_id }, res => {
-      this.gmapInputElement.nativeElement.value = res.name;
-      const marker = new google.maps.Marker({position: latAndLgn, title: res.name});
-      marker.setMap(this._googleMap);
-    });
   }
 }
