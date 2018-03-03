@@ -57,9 +57,12 @@ function createEvent(req, res) {
 }
 
 function updateEvent(req, res) {
-    var userId = req.user.sub;
+    let files = null; 
+    if(req.files) {
+        files = req.files.fileKey;
+    }
 
-    eventService.update(req.body.event)
+    eventService.update(JSON.parse(req.body.event), files)
         .then(function () {
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: false, success: true, body: 'event updated' });
