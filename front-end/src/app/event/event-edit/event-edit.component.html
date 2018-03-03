@@ -1,75 +1,98 @@
 <div class="container">
-    <h1>{{event.event_name | capitalize}}</h1>
-    <div *ngIf="event.invitations">
-      <h5 *ngIf="event.invitations.length > 0">The Following Invitations were made</h5>
-      <h5 *ngIf="event.invitations.length === 0">You have not invited any user</h5>
-    </div>
-    <ul class="list-group list-group-flush" *ngFor="let invitation of event.invitations">
-      <li class="list-group-item" >To {{invitation.user.username}} he|she has {{invitation.is_going}}</li>
-    </ul>
-    <div class="form-group">
-      <h3>Invitate user</h3>
-      <input type="text" class="form-control" placeholder="Write user name to invitate" #invitateInput>
-    </div>
-
+  <h1>Edit</h1>
+  <div class="container">
     <div class="container">
-        <div class="container">
-            <div class="row">
-              <div class="col-sm">
-                  <div>
-                      <h5>Description:</h5>
-                      {{event.description}}
-                    </div>
-              </div>
-              <div class="col-sm">
-                  <div>
-                    <h5>Starts at:</h5> {{event.start_date}} {{event.start_time}}</div>
-              </div>
-              <div class="col-sm">
-                  <div><h5>Ends at: </h5> {{event.end_date}} {{event.end_time}}</div>
-              </div>
-              <div class="col-sm">
-                  <div><h5>Category:</h5>  <p *ngIf="event.category">{{event.category.title}}</p></div>
-              </div>
+      <div class="row">
+
+        <div class="col-sm">
+          <div class="form-group">
+            <h5>Name:</h5>
+            <input type="text" class="form-control" [(ngModel)]="event.event_name" name="name" id="name" #name="ngModel" required>
+            <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Name is required
             </div>
           </div>
 
           <div class="form-group">
-            <label for="location"><h4>Location</h4></label>
-            <input type="text"
-              #gmapInput
-              type="address"
-              (setAddress) = "getAddress($event)"
-              (FormatAddress)="getFormattedAddress($event)"
-              (street_number) = 'street_number=$event'
-              (street)= 'street=$event'
-              (city)= 'city=$event'
-              (state)='state=$event'
-              (district)='district=$event'
-              (country)='country=$event'
-              (postal_code)='postal_code=$event'
-              (lat)='lat=$event'
-              (lng)='lng=$event'
-              (adr_address)='adr_address=$event'
-              (name)='name=$event'
-              (place_id)='place_id=$event'
-              (types)='types=$event'
-              (url)='url=$event'
-              (utc_offset)='utc_offset=$event'
-              (vicinity)='vicinity=$event'
-              (photos)='photos=$event'
-              (CountryCodes)='CountryCodes=$event'
-                id="autocomplete"
-              angularGooglePlace/>
+            <h5>Description:</h5>
+            <input type="text" class="form-control" [(ngModel)]="event.description" name="description" id="description" #description="ngModel"
+              required>
+            <div [hidden]="description.valid || description.pristine" class="alert alert-danger">
+              Description is required
+            </div>
+          </div>
+        </div>
 
-              <div #gmap style='width:100%;height:400px'></div>
+
+        <div class="col-sm">
+          <div class="form-group">
+            <label for="start_date">Start Date</label>
+            <input type="date" class="form-control" [(ngModel)]="event.start_date" name="start_date" id="start_date" #start_date="ngModel"
+              required>
+            <div [hidden]="start_date.valid || start_date.pristine" class="alert alert-danger">
+              Start Date is required
+            </div>
           </div>
 
-          <div >
+          <div class="form-group">
+            <label for="start_time">Start Time</label>
+            <input type="time" class="form-control" [(ngModel)]="event.start_time" name="start_time" id="start_time" #start_time="ngModel"
+              required>
+            <div [hidden]="start_time.valid || start_time.pristine" class="alert alert-danger">
+              Start Date is required
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm">
+          <div class="form-group">
+            <label for="end_date">End Date</label>
+            <input type="date" class="form-control" [(ngModel)]="event.end_date" name="end_date" id="end_date" #end_date="ngModel" required>
+            <div [hidden]="end_date.valid || end_date.pristine" class="alert alert-danger">
+              End Date is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="end_time">End Time</label>
+            <input type="time" class="form-control" [(ngModel)]="event.end_time" name="end_time" id="end_time" #end_time="ngModel" required>
+            <div [hidden]="end_time.valid || end_time.pristine" class="alert alert-danger">
+              Start Date is required
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm">
+          <div class="form-group">
+            <label for="power">Category</label>
+            <select class="form-control" id="power" [(ngModel)]="event.category_id" name="event_category" required>
+              <option *ngFor="let category of categories" [value]="category.id">{{category.title}}</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label for="location">
+          <h4>Location</h4>
+        </label>
+        <app-google-map (address)="getAddress($event)" (addressFormat)="getFormattedAddress($event)"></app-google-map>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Change Image</label>
+        <input type="file" class="form-control" (change)="handleFileInput($event.target.files)" name="image" id="image" required>
+        <div >
             <h4 for="image">Image</h4>
             <img #eventImage class="img-fluid">
           </div>
+      </div>
+
 
     </div>
 
-    </div>
+  </div>
+
+</div>
