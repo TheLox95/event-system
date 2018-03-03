@@ -96,11 +96,12 @@ getById(id: string) {
 
   update(event: EventInterface) {
     const formData: FormData = new FormData();
+
     if (event.image instanceof File) {
       formData.append('fileKey', event.image, event.image.name);
     }
     formData.append('event', JSON.stringify(event));
-    return this._http.put(`http://localhost:3000/api/events/update/`, {event});
+    return this._http.put(`http://localhost:3000/api/events/update/`, formData);
   }
 
 }
