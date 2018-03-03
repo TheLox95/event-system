@@ -30,39 +30,13 @@
     </div>
 
     <div class="form-group">
-      <label for="start_date">Start Date</label>
-      <input type="date" class="form-control" [(ngModel)]="event.start_date" name="start_date" id="start_date" #start_date="ngModel" required>
-      <div [hidden]="start_date.valid || start_date.pristine"
-        class="alert alert-danger">
-        Start Date is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="end_date">End Date</label>
-      <input type="date" class="form-control" [(ngModel)]="event.end_date" name="end_date" id="end_date" #end_date="ngModel" required>
-      <div [hidden]="end_date.valid || end_date.pristine"
-        class="alert alert-danger">
-        End Date is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="start_time">Start Date</label>
-      <input type="time" class="form-control" [(ngModel)]="event.start_time" name="start_time" id="start_time" #start_time="ngModel" required>
-      <div [hidden]="start_time.valid || start_time.pristine"
-        class="alert alert-danger">
-        Start Date is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="end_time">Start Date</label>
-      <input type="time" class="form-control" [(ngModel)]="event.end_time" name="end_time" id="end_time" #end_time="ngModel" required>
-      <div [hidden]="end_time.valid || end_time.pristine"
-        class="alert alert-danger">
-        Start Date is required
-      </div>
+      <label>Date Time Range:</label>
+        <input [owlDateTimeTrigger]="dtPicker3" [owlDateTime]="dtPicker3"
+                [(ngModel)]="dates"
+                name="timeRange"
+               [selectMode]="'range'"
+               class="form-control" required>
+        <owl-date-time #dtPicker3></owl-date-time>
     </div>
 
     <div class="form-group">

@@ -18,17 +18,16 @@ export class EventRegisterComponent implements OnInit {
   public categories: Observable<{'id', 'title', 'description', 'image'}[]>;
   private _currentUser: User;
   private currentLocation: LocationInterface = {longitude: 0, latitude: 0, place_id: ''};
+  dates: Date[] = [];
   event = {
     'category_id': '',
     'event_name': '',
     'user_id': '',
     'description': '',
     'image': '',
-    'start_date': '',
-    'end_date': '',
+    'start_timestamp': '',
     'modified': '',
-    'start_time': '',
-    'end_time': '',
+    'end_timestamp': '',
     'location': undefined,
     'count': 0,
     'aproved': false
@@ -59,6 +58,8 @@ export class EventRegisterComponent implements OnInit {
   onSubmit() {
     console.log('submit event');
     this.event.user_id = this._currentUser._id;
+    this.event.start_timestamp = this.dates[0].toISOString();
+    this.event.end_timestamp = this.dates[1].toISOString();
     this._eventService.post(this.event).subscribe(this.handleResponse, console.log, console.log);
   }
 
