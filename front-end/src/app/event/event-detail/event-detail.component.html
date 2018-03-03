@@ -4,10 +4,17 @@
     <h5 *ngIf="event.invitations.length > 0">The Following Invitations were made</h5>
     <h5 *ngIf="event.invitations.length === 0">You have not invited any user</h5>
   </div>
-  <ul class="list-group list-group-flush" *ngFor="let invitation of event.invitations">
+  <ul class="list-group list-group-flush" *ngFor="let invitation of event.invitations; index as i">
 
     <li class="list-group-item" *ngIf="invitation.is_going === 'unresponded'">
-      To {{invitation.user.username}} has not responded yet.
+    <div class="row">
+      <div class="col-10">
+        To {{invitation.user.username}} has not responded yet.
+      </div>
+      <div class="col-sm" (click)="cancelInvitation(i)">
+          Cancel
+        </div>
+    </div>
     </li>
 
     <li class="list-group-item" *ngIf="invitation.is_going === 'accepted'">

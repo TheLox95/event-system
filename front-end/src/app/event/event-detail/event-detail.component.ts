@@ -74,13 +74,25 @@ export class EventDetailComponent implements OnInit {
       if (res['error'] === true) {
         return this._setErrorMessage(res['body']);
       }
-      const invitation = new Invitation(res['body'], this.event, IsGoingState.UNRESPONDED) ;
+      const invitation = new Invitation(res['body'], this.event, IsGoingState.UNRESPONDED ) ;
       this._eventService.invitate(invitation).subscribe(resInvitation => {
         if (resInvitation['error'] === true) {
           return this._setErrorMessage(resInvitation['body']);
         }
+        invitation._id = resInvitation['body']._id;
         this.event.invitations.push(invitation);
       });
+    }, console.log);
+  }
+
+  cancelInvitation(index) {
+    console.log(this.event.invitations[index]);
+    this._eventService.cancelInvitation(this.event.invitations[index]).subscribe(res => {
+      if (res['error'] === true) {
+        this._setErrorMessage(res['body']);
+        return;
+      }
+      this.event.invitations = this.event.invitations.filter((item, indexItem) => indexItem !== index);
     }, console.log);
   }
 
