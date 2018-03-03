@@ -1,12 +1,13 @@
 import {Router} from '@angular/router';
 import { UserService } from './../../user/user.service';
 import { EventService } from './../event.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../category.service';
 import { Observable } from 'rxjs/Observable';
 import { EventInterface } from '../EventInterface';
 import User from '../../user/User';
 import LocationInterface from '../LocationInterface';
+import { Address } from 'angular-google-place';
 
 @Component({
   selector: 'app-event-register',

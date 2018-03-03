@@ -5,7 +5,7 @@ import {EventInterface} from '../../event/EventInterface';
 import { Component, OnInit } from '@angular/core';
 import { Invitation, IsGoingState } from '../../event/invitation';
 import User from '../../user/User';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-panel',
