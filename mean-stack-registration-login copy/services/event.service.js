@@ -111,7 +111,7 @@ function create(eventObj, image) {
     return deferred.promise;
 }
 
-function update(eventParam) {
+function update(eventParam, image) {
     var deferred = Q.defer();
 
     // validation
@@ -148,6 +148,10 @@ function update(eventParam) {
             { $set: eventParam },
             function (err, doc) {
                 if (err) deferred.reject(err.name + ': ' + err.message);
+
+                if(image){
+                    imageService.save(image, {_id});
+                }
 
                 deferred.resolve();
             });
