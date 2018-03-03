@@ -10,11 +10,9 @@ export interface EventInterface {
     user_id: string;
     description: string;
     image: string | File;
-    start_date: string;
-    end_date: string;
+    start_timestamp: string;
     modified: string;
-    start_time: string;
-    end_time: string;
+    end_timestamp: string;
     location: LocationInterface;
     count: number;
     aproved: boolean;
