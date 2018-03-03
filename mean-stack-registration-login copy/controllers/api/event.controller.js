@@ -7,7 +7,7 @@ var imageService = require('services/image.service');
 // routes
 router.get('/:user_id', getByUserId);
 router.get('/id/:id', getById);
-router.get('/image/:event_name', showImage);
+router.get('/image/:event_id', showImage);
 router.post('/new', createEvent);
 router.put('/update', updateEvent);
 router.delete('/delete', deleteEvent);
@@ -15,7 +15,7 @@ router.delete('/delete', deleteEvent);
 module.exports = router;
 
 function showImage(req, res){
-    const imagePath = imageService.get(req.params['event_name'])
+    const imagePath = imageService.get(req.params['event_id'])
     res.sendFile(imagePath);
 }
 
@@ -58,17 +58,15 @@ function createEvent(req, res) {
 
 function updateEvent(req, res) {
     var userId = req.user.sub;
-    if (req.params._id !== userId) {
-        // can only update own account
-        return res.status(401).send('You can only update your own account');
-    }
 
-    eventService.update(userId, req.body)
+    eventService.update(req.body.event)
         .then(function () {
-            res.sendStatus(200);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: false, success: true, body: 'event updated' });
         })
         .catch(function (err) {
-            res.status(400).send(err);
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body: err });
         });
 }
 
