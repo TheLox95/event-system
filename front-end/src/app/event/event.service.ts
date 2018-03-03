@@ -59,7 +59,7 @@ getById(id: string) {
   }
   return this._http.get<SERVER_RESPONSE>(`http://localhost:3000/api/events/id/${id}`).map(res => {
     this._servicesMap.get('EVENT_ID').set(id, res);
-  return res.body;
+    return res;
   });
 }
 
