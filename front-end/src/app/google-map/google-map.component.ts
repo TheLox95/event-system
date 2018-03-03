@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Address } from 'angular-google-place';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-google-map',
@@ -34,7 +35,8 @@ export class GoogleMapComponent implements OnInit {
   }
 
   async setCenter(latLng: google.maps.LatLng | google.maps.LatLngLiteral, place_id: string) {
-    this._map.setCenter(latLng);
+    await this._waitForMapToLoad();
+    await this._map.setCenter(latLng);
 
     const place = await this._getPlace(place_id);
     this.mapInputElement.nativeElement.value = place.name;
@@ -53,6 +55,20 @@ export class GoogleMapComponent implements OnInit {
   private _addMarker(latLng: google.maps.LatLng | google.maps.LatLngLiteral, title: string) {
     const marker = new google.maps.Marker({position: latLng, title});
     marker.setMap(this._map);
+  }
+
+  private _waitForMapToLoad() {
+    let wait = Promise.resolve();
+    if (this._map === undefined) {
+      wait = new Promise((resolve, rejected) => {
+        setTimeout(() => {
+          if (this._map !== undefined) {
+            resolve();
+          }
+        }, 500);
+      });
+    }
+    return wait;
   }
 
 }
