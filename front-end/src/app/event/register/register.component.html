@@ -1,0 +1,53 @@
+<div class="container">
+  <h1>Event Register</h1>
+  <form #eventRegister="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" [(ngModel)]="event.event_name" name="title" id="title" #title="ngModel" required>
+      <div [hidden]="title.valid || title.pristine"
+        class="alert alert-danger">
+        Title is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" [(ngModel)]="event.description" name="description" id="description" #description="ngModel" required>
+      <div [hidden]="description.valid || description.pristine"
+        class="alert alert-danger">
+        description is required
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location</label>
+        <app-google-map (address)="getAddress($event)" (addressFormat)="getFormattedAddress($event)"></app-google-map>
+      </div>
+
+    <div class="form-group">
+      <label for="image">Image</label>
+      <input type="file" class="form-control" (change)="handleFileInput($event.target.files)" name="image" id="image" required>
+    </div>
+
+    <div class="form-group">
+      <label>Date Time Range:</label>
+        <input [owlDateTimeTrigger]="dtPicker3" [owlDateTime]="dtPicker3"
+                [(ngModel)]="dates"
+                name="timeRange"
+               [selectMode]="'range'"
+               class="form-control" required>
+        <owl-date-time #dtPicker3></owl-date-time>
+    </div>
+
+    <div class="form-group">
+      <label for="power">Category</label>
+      <select class="form-control" id="power" [(ngModel)]="event.category_id" name="event_category" required>
+        <option *ngFor="let category of categories | async" [value]="category.id">{{category.title}}</option>
+      </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-success" [disabled]="!eventRegister.form.valid">Submit</button>
+    <div *ngIf="responseError" class="help-block error small">{{responseError}}.</div>
+  </form>
+</div>
