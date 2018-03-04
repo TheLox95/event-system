@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class UserRegisterComponent implements OnInit {
   user = new User();
+  error: string;
 
   constructor(private _userService: UserService, private _route: Router) { }
 
@@ -27,7 +28,10 @@ export class UserRegisterComponent implements OnInit {
   private readonly redirect = (res) => {
     if (res['success'] === true) {
       this._route.navigate(['/'], {queryParams: {'msg': 'User register successfully'}});
+      return;
     }
+
+    this.error = res['body'];
   }
 
 }
