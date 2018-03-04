@@ -32,7 +32,7 @@ function getById(req, res) {
 }
 
 function getByUserId(req, res) {
-    eventService.getByUser(req.params)
+    eventService.getByUserId(req.params)
         .then(function (events) {
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: false, success: true, body: events});

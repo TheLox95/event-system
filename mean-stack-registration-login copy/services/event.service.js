@@ -17,7 +17,7 @@ dbUSER.bind('users');
 var service = {};
 
 service.getById = getById;
-service.getByUser = getByUser;
+service.getByUserId = getByUser;
 service.create = create;
 service.update = update;
 service.delete = _delete;
