@@ -1,27 +1,14 @@
-<input type="text"
-  #mapInput
-  type="address"
-  (setAddress) = "getAddress($event)"
-  (FormatAddress)="getFormattedAddress($event)"
-  (street_number) = 'street_number=$event'
-  (street)= 'street=$event'
-  (city)= 'city=$event'
-  (state)='state=$event'
-  (district)='district=$event'
-  (country)='country=$event'
-  (postal_code)='postal_code=$event'
-  (lat)='lat=$event'
-  (lng)='lng=$event'
-  (adr_address)='adr_address=$event'
-  (name)='name=$event'
-  (place_id)='place_id=$event'
-  (types)='types=$event'
-  (url)='url=$event'
-  (utc_offset)='utc_offset=$event'
-  (vicinity)='vicinity=$event'
-  (photos)='photos=$event'
-  (CountryCodes)='CountryCodes=$event'
-    id="autocomplete"
-  angularGooglePlace/>
-
-  <div #gmap style='width:100%;height:400px'></div>
+<div class="container">
+  <h1>Angular 2 + Google Maps Places Autocomplete</h1>
+  <div class="form-group">
+    <input
+      placeholder="search for location"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off"
+      type="text" class="form-control" #search >
+  </div>
+  <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+    <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+  </agm-map>
+</div>

@@ -1,73 +1,56 @@
-import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { Address } from 'angular-google-place';
-
+import { Component, OnInit, ViewChild, EventEmitter, Output, ElementRef, NgZone } from '@angular/core';
+import {} from '@types/googlemaps';
+import { MapsAPILoader } from '@agm/core';
 @Component({
   selector: 'app-google-map',
-  templateUrl: './google-map.component.html'
+  templateUrl: './google-map.component.html',
+  styles: ['agm-map {height: 300px;}']
 })
 export class GoogleMapComponent implements OnInit {
 
-  @ViewChild('gmap') public gmapElement: any;
-  @ViewChild('mapInput') public mapInputElement: any;
+  @ViewChild('search')
+  public searchElementRef: ElementRef;
   @Output() addressFormat = new EventEmitter<any>();
-  @Output() address = new EventEmitter<Address>();
-  private _map: google.maps.Map;
-  private mapProp = {
-    center: new google.maps.LatLng(18.5793, 73.8143),
-    zoom: 15,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
+  @Output() address = new EventEmitter<any>();
+  latitude = -74.005973;
+  longitude = 40.712775;
+  zoom: number;
 
-  constructor() { }
+
+  constructor(
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone) { }
 
   ngOnInit() {
-    this._map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
-  }
+    this.zoom = 4;
 
-  getAddress(place: Address) {
-    this.address.emit(place);
-  }
+    this.mapsAPILoader.load().then(() => {
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          // get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          this.address.emit({place_id: place.id});
+          this.addressFormat.emit(place.geometry.location.toJSON());
 
-  getFormattedAddress(event: any) {
-    this._map.setCenter(new google.maps.LatLng(event.lat, event.lng));
-    this.addressFormat.emit(event);
-  }
+          // verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
 
-  async setCenter(latLng: google.maps.LatLng | google.maps.LatLngLiteral, place_id: string) {
-    await this._waitForMapToLoad();
-    await this._map.setCenter(latLng);
-
-    const place = await this._getPlace(place_id);
-    this.mapInputElement.nativeElement.value = place.name;
-    this._addMarker(latLng, place.name);
-  }
-
-  private _getPlace(place_id) {
-    return new Promise<google.maps.places.PlaceResult>((resolve, rejected) => {
-      const placeService = new google.maps.places.PlacesService(this._map);
-      placeService.getDetails({ placeId: place_id }, res => {
-        resolve(res);
+          // set latitude, longitude and zoom
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 15;
+        });
       });
     });
   }
 
-  private _addMarker(latLng: google.maps.LatLng | google.maps.LatLngLiteral, title: string) {
-    const marker = new google.maps.Marker({position: latLng, title});
-    marker.setMap(this._map);
-  }
-
-  private _waitForMapToLoad() {
-    let wait = Promise.resolve();
-    if (this._map === undefined) {
-      wait = new Promise((resolve, rejected) => {
-        setTimeout(() => {
-          if (this._map !== undefined) {
-            resolve();
-          }
-        }, 500);
-      });
-    }
-    return wait;
+  setCenter(latLng: google.maps.LatLngLiteral, place_id: string) {
+    this.latitude = latLng.lat;
+    this.longitude = latLng.lng;
+    this.zoom = 15;
   }
 
 }
