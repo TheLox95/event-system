@@ -21,7 +21,12 @@ router.post('/', function (req, res) {
         form: req.body,
         json: true
     }, function (error, response, body) {
-        console.log(body);
+        
+        if(body.substring(0, 10) == "MongoError"){
+            res.setHeader('Content-Type', 'application/json');
+            res.send({ error: true, success: false, body});
+            return
+        }
         if (error) {
             res.setHeader('Content-Type', 'application/json');
             res.send({ error: 'An error occurred' });
