@@ -51,7 +51,7 @@ export class EventEditComponent implements OnInit {
     });
   }
 
-  getAddress(place: Address) {
+  getAddress(place) {
     console.log('Address', place);
     this.currentLocation.place_id = place.place_id;
   }
