@@ -5,10 +5,11 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
 var config = require('config.json');
+const path = require('path');
 const fileUpload = require('express-fileupload');
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.use(express.static(path.join(__dirname, '../front-end/dist')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
@@ -33,9 +34,9 @@ app.use('/api/users', require('./controllers/api/users.controller'));
 app.use('/api/events', require('./controllers/api/event.controller'));
 app.use('/api/rsvp', require('./controllers/api/rsvp.controller'));
 
-// make '/app' default route
-app.get('/', function (req, res) {
-    return res.redirect('/app');
+// Send all other requests to the Angular app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../front-end/dist/index.html'));
 });
 
 // start server
