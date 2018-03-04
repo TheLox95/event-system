@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd front-end && npm run build && cd ../ && cd mean-stack-registration-login copy && node server",
+    "server": "cd mean-stack-registration-login copy && node server",
+    "front": "cd front-end && npm run dev",
+    "prepare": "cd front-end && npm i && cd ../ && cd mean-stack-registration-login copy && npm i"
   },
   "repository": {
     "type": "git",
