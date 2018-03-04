@@ -62,7 +62,7 @@ function getInvitationsByUsername(invitationParam) {
             _getEvent(rsvp.event_id).then(event => {
               rsvp.event = event;
 
-              _getUser(rsvp.user_id).then(user => {
+              _getUser(event.user_id).then(user => {
                 rsvp.user = user;
                 resolve(rsvp);
               });
