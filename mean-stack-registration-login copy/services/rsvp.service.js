@@ -9,6 +9,7 @@ var mongo = require('mongoskin');
 var db = mongo.db(config.connectionString, { native_parser: true });
 db.bind('rsvp');
 db.bind('events');
+db.bind('users');
 
 var service = {};
 
@@ -52,28 +53,52 @@ function response(responseFromUser) {
 function getInvitationsByUsername(invitationParam) {
     var deferred = Q.defer();
 
-    db.rsvp.find({ user_id: invitationParam.user_id }).toArray(function(err, result) {
+    db.rsvp
+      .find({ user_id: invitationParam.user_id })
+      .toArray(function(err, result) {
         if (err) deferred.reject(err);
-        const arr = result.map((rsvp) => {
-            return new Promise((resolve, rejected) => {
-                return eventService.getById(rsvp.event_id).then(event => {
-                    rsvp.event = event;
-                    rsvp = _.omit(rsvp, "user_id");
-                    rsvp = _.omit(rsvp, "event_id");
-    
-                    return userService.getById(event.user_id).then(user => {
-                        rsvp.user = user
-                        resolve(rsvp);
-                    });
-                });
+        const arr = result.map(rsvp => {
+          return new Promise((resolve, rejected) => {
+            _getEvent(rsvp.event_id).then(event => {
+              rsvp.event = event;
+
+              _getUser(rsvp.user_id).then(user => {
+                rsvp.user = user;
+                resolve(rsvp);
+              });
             });
+          });
         });
+
         Promise.all(arr).then(function(results) {
             deferred.resolve(results);
-        })
-    });
+          });
+      });
 
     return deferred.promise;
+}
+
+function _getEvent(id){
+    return new Promise((resolve, rejected) => {
+        db.events.findById(id, function(err, event) {
+            if(err){
+                rejected(err);
+            }
+
+            resolve(event);
+        });
+    });
+}
+
+function _getUser(id){
+    return new Promise((resolve, rejected) => {
+        db.users.findById(id,(err, user) => {
+            if (err) {
+              rejected(err);
+            }
+            resolve(user);
+          });
+    });
 }
 
 function invitate(invitationParam) {
