@@ -1,5 +1,5 @@
 ﻿{
-    "connectionString": "mongodb://127.0.0.1:27017/mean-stack-registration-login-example",
+    "connectionString": "mongodb://event-system:event-system@cluster0-shard-00-00-hgstp.mongodb.net:27017,cluster0-shard-00-01-hgstp.mongodb.net:27017,cluster0-shard-00-02-hgstp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
     "apiUrl": "http://localhost:3000/api",
     "secret": "Rally"
 }
