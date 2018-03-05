@@ -1,2 +1,2 @@
 release: npm run prepare
-web: node mean-stack-registration-login copy/server.js
+web: node mean-stack-registration-login/server.js
