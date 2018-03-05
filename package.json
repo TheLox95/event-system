@@ -4,6 +4,7 @@
   "description": "",
   "main": "mean-stack-registration-login copy/index.js",
   "scripts": {
+    "prestart": "npm run prepare",
     "start": "cd front-end && npm run build && cd ../ && cd mean-stack-registration-login copy && node server",
     "server": "cd mean-stack-registration-login copy && node server",
     "front": "cd front-end && npm run dev",
