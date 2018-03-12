@@ -23,7 +23,7 @@ router.post('/', function (req, res) {
     }, function (error, response, body) {
         if (error) {
             res.setHeader('Content-Type', 'application/json');
-            res.send({ error: 'An error occurred' });
+            res.send({ error: true, body: error });
             return 
         }
 
