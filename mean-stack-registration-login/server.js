@@ -11,7 +11,8 @@ const fileUpload = require('express-fileupload');
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '../front-end/dist')));
 // Send all other requests to the Angular app
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
+    if (req.url.substring(1, 4) === 'api' ) return next();
     res.sendFile(path.join(__dirname, '../front-end/dist/index.html'));
 });
 app.use(bodyParser.urlencoded({ extended: false }));
