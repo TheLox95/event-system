@@ -9,7 +9,7 @@ export class UserService {
   constructor(private _http: HttpClient) { }
 
   login(username, password) {
-    return this._http.post(`${environment.api_url}login/`, {username, password}, {responseType: 'json'});
+    return this._http.post(`${environment.url}login/`, {username, password}, {responseType: 'json'});
   }
 
   getCurrent() {
@@ -17,7 +17,7 @@ export class UserService {
   }
 
   getByUsername(username: string) {
-    return this._http.get(`${environment.api_url}users/${username}`)
+    return this._http.get(`${environment.api_url}users/${username}`);
   }
 
   private readonly toUser = (obj: Object) => {
