@@ -63,7 +63,8 @@ function getCurrentUser(req, res) {
     userService.getById(req.user.sub)
         .then(function (user) {
             if (user) {
-                res.send(user);
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify(user));
             } else {
                 res.sendStatus(404);
             }
