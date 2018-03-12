@@ -13,11 +13,11 @@ export class UserService {
   }
 
   getCurrent() {
-    return this._http.get(`${environment.api_url}api/users/current`).map(this.toUser);
+    return this._http.get(`${environment.api_url}users/current`).map(this.toUser);
   }
 
   getByUsername(username: string) {
-    return this._http.get(`${environment.api_url}api/users/${username}`)
+    return this._http.get(`${environment.api_url}users/${username}`)
   }
 
   private readonly toUser = (obj: Object) => {
@@ -32,7 +32,7 @@ export class UserService {
       password: user.password
     };
 
-    return this._http.post(`${environment.api_url}api/users/register`, {
+    return this._http.post(`${environment.api_url}users/register`, {
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
