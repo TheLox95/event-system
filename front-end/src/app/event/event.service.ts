@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventInterface } from './EventInterface';
@@ -21,7 +22,7 @@ export class EventService {
       formData.append('fileKey', event.image, event.image.name);
     }
     formData.append('event', JSON.stringify(event));
-    return this._http.post(`http://localhost:3000/api/events/new`, formData);
+    return this._http.post(`${environment.api_url}api/events/new`, formData);
   }
 
   image(event_id: string) {
@@ -29,7 +30,7 @@ export class EventService {
       let objectUrl: string = null;
 
       this._http
-            .get(`http://localhost:3000/api/events/image/${event_id}`, {
+            .get(`${environment.api_url}api/events/image/${event_id}`, {
                 responseType: 'blob'
             })
           .subscribe(m => {
@@ -49,15 +50,15 @@ export class EventService {
 
 getById(id: string) {
 
-  return this._http.get<ServerResponse>(`http://localhost:3000/api/events/id/${id}`);
+  return this._http.get<ServerResponse>(`${environment.api_url}api/events/id/${id}`);
 }
 
   get(user: User) {
-    return this._http.get<ServerResponse>(`http://localhost:3000/api/events/${user._id}`);
+    return this._http.get<ServerResponse>(`${environment.api_url}api/events/${user._id}`);
   }
 
   invitate(invitation: Invitation) {
-    return this._http.post(`http://localhost:3000/api/rsvp/invitate`, {
+    return this._http.post(`${environment.api_url}api/rsvp/invitate`, {
       event_id: invitation.event._id,
       user_id: invitation.user._id,
       is_going: invitation.is_going
@@ -65,11 +66,11 @@ getById(id: string) {
   }
 
   invitations(user: User) {
-    return this._http.get(`http://localhost:3000/api/rsvp/invitations/${user._id}`);
+    return this._http.get(`${environment.api_url}api/rsvp/invitations/${user._id}`);
   }
 
   responceInvitation(invitation: Invitation, res: IsGoingState) {
-    return this._http.put(`http://localhost:3000/api/rsvp/response/`, {
+    return this._http.put(`${environment.api_url}api/rsvp/response/`, {
       id: invitation._id,
       res: res
     }, {withCredentials: true});
@@ -81,15 +82,15 @@ getById(id: string) {
       formData.append('fileKey', event.image, event.image.name);
     }
     formData.append('event', JSON.stringify(event));
-    return this._http.put(`http://localhost:3000/api/events/update/`, formData);
+    return this._http.put(`${environment.api_url}api/events/update/`, formData);
   }
 
   delete(event: EventInterface) {
-    return this._http.delete(`http://localhost:3000/api/events/delete/${event._id}`);
+    return this._http.delete(`${environment.api_url}api/events/delete/${event._id}`);
   }
 
   cancelInvitation(invitation: Invitation) {
-    return this._http.delete(`http://localhost:3000/api/rsvp/cancel/${invitation._id}`);
+    return this._http.delete(`${environment.api_url}api/rsvp/cancel/${invitation._id}`);
   }
 
 }

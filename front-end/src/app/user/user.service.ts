@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import User from './User';
@@ -8,15 +9,15 @@ export class UserService {
   constructor(private _http: HttpClient) { }
 
   login(username, password) {
-    return this._http.post(`http://localhost:3000/login/`, {username, password}, {responseType: 'json'});
+    return this._http.post(`${environment.api_url}login/`, {username, password}, {responseType: 'json'});
   }
 
   getCurrent() {
-    return this._http.get(`http://localhost:3000/api/users/current`).map(this.toUser);
+    return this._http.get(`${environment.api_url}api/users/current`).map(this.toUser);
   }
 
   getByUsername(username: string) {
-    return this._http.get(`http://localhost:3000/api/users/${username}`)
+    return this._http.get(`${environment.api_url}api/users/${username}`)
   }
 
   private readonly toUser = (obj: Object) => {
@@ -31,7 +32,7 @@ export class UserService {
       password: user.password
     };
 
-    return this._http.post(`http://localhost:3000/api/users/register`, {
+    return this._http.post(`${environment.api_url}api/users/register`, {
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
