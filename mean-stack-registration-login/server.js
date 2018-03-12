@@ -10,6 +10,10 @@ const fileUpload = require('express-fileupload');
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '../front-end/dist')));
+// Send all other requests to the Angular app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../front-end/dist/index.html'));
+});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({ secret: config.secret, resave: false, saveUninitialized: true }));
@@ -34,11 +38,6 @@ app.use('/app', require('./controllers/app.controller'));
 app.use('/api/users', require('./controllers/api/users.controller'));
 app.use('/api/events', require('./controllers/api/event.controller'));
 app.use('/api/rsvp', require('./controllers/api/rsvp.controller'));
-
-// Send all other requests to the Angular app
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../front-end/dist/index.html'));
-});
 
 // start server
 var server = app.listen(process.env.PORT || 3000, function () {
